@@ -1,0 +1,685 @@
+<?xml version="1.0"?>
+<Events>
+	<Event id="unlockedByCode">
+		<Name>Lock unlocked by code</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+			<Field id="userNo" type="menu" defaultValue="Any">
+				<List>
+					<Option value="Any">Any User</Option>
+					<Option value="1">1</Option>
+					<Option value="2">2</Option>
+					<Option value="3">3</Option>
+					<Option value="4">4</Option>
+					<Option value="5">5</Option>
+					<Option value="6">6</Option>
+					<Option value="7">7</Option>
+					<Option value="8">8</Option>
+					<Option value="9">9</Option>
+					<Option value="10">10</Option>
+					<Option value="11">11</Option>
+					<Option value="12">12</Option>
+					<Option value="13">13</Option>
+					<Option value="14">14</Option>
+					<Option value="15">15</Option>
+					<Option value="16">16</Option>
+					<Option value="17">17</Option>
+					<Option value="18">18</Option>
+					<Option value="19">19</Option>
+					<Option value="20">20</Option>
+					<Option value="21">21</Option>
+					<Option value="22">22</Option>
+					<Option value="23">23</Option>
+					<Option value="24">24</Option>
+					<Option value="25">25</Option>
+					<Option value="26">26</Option>
+					<Option value="27">27</Option>
+					<Option value="28">28</Option>
+					<Option value="29">29</Option>
+					<Option value="30">30</Option>
+					<Option value="31">31</Option>
+					<Option value="32">32</Option>
+					<Option value="33">33</Option>
+					<Option value="34">34</Option>
+					<Option value="35">35</Option>
+					<Option value="36">36</Option>
+					<Option value="37">37</Option>
+					<Option value="38">38</Option>
+					<Option value="39">39</Option>
+					<Option value="40">40</Option>
+					<Option value="41">41</Option>
+					<Option value="42">42</Option>
+					<Option value="43">43</Option>
+					<Option value="44">44</Option>
+					<Option value="45">45</Option>
+					<Option value="46">46</Option>
+					<Option value="47">47</Option>
+					<Option value="48">48</Option>
+					<Option value="49">49</Option>
+					<Option value="50">50</Option>
+					<Option value="51">51</Option>
+					<Option value="52">52</Option>
+					<Option value="53">53</Option>
+					<Option value="54">54</Option>
+					<Option value="55">55</Option>
+					<Option value="56">56</Option>
+					<Option value="57">57</Option>
+					<Option value="58">58</Option>
+					<Option value="59">59</Option>
+					<Option value="60">60</Option>
+					<Option value="61">61</Option>
+					<Option value="62">62</Option>
+					<Option value="63">63</Option>
+					<Option value="64">64</Option>
+					<Option value="65">65</Option>
+					<Option value="66">66</Option>
+					<Option value="67">67</Option>
+					<Option value="68">68</Option>
+					<Option value="69">69</Option>
+					<Option value="70">70</Option>
+					<Option value="71">71</Option>
+					<Option value="72">72</Option>
+					<Option value="73">73</Option>
+					<Option value="74">74</Option>
+					<Option value="75">75</Option>
+					<Option value="76">76</Option>
+					<Option value="77">77</Option>
+					<Option value="78">78</Option>
+					<Option value="79">79</Option>
+					<Option value="80">80</Option>
+					<Option value="81">81</Option>
+					<Option value="82">82</Option>
+					<Option value="83">83</Option>
+					<Option value="84">84</Option>
+					<Option value="85">85</Option>
+					<Option value="86">86</Option>
+					<Option value="87">87</Option>
+					<Option value="88">88</Option>
+					<Option value="89">89</Option>
+					<Option value="90">90</Option>
+					<Option value="91">91</Option>
+					<Option value="92">92</Option>
+					<Option value="93">93</Option>
+					<Option value="94">94</Option>
+					<Option value="95">95</Option>
+					<Option value="96">96</Option>
+					<Option value="97">97</Option>
+					<Option value="98">98</Option>
+					<Option value="99">99</Option>
+					<Option value="100">100</Option>
+					<Option value="101">101</Option>
+					<Option value="102">102</Option>
+					<Option value="103">103</Option>
+					<Option value="104">104</Option>
+					<Option value="105">105</Option>
+					<Option value="106">106</Option>
+					<Option value="107">107</Option>
+					<Option value="108">108</Option>
+					<Option value="109">109</Option>
+					<Option value="110">110</Option>
+					<Option value="111">111</Option>
+					<Option value="112">112</Option>
+					<Option value="113">113</Option>
+					<Option value="114">114</Option>
+					<Option value="115">115</Option>
+					<Option value="116">116</Option>
+					<Option value="117">117</Option>
+					<Option value="118">118</Option>
+					<Option value="119">119</Option>
+					<Option value="120">120</Option>
+					<Option value="121">121</Option>
+					<Option value="122">122</Option>
+					<Option value="123">123</Option>
+					<Option value="124">124</Option>
+					<Option value="125">125</Option>
+					<Option value="126">126</Option>
+					<Option value="127">127</Option>
+					<Option value="128">128</Option>
+					<Option value="129">129</Option>
+					<Option value="130">130</Option>
+					<Option value="131">131</Option>
+					<Option value="132">132</Option>
+					<Option value="133">133</Option>
+					<Option value="134">134</Option>
+					<Option value="135">135</Option>
+					<Option value="136">136</Option>
+					<Option value="137">137</Option>
+					<Option value="138">138</Option>
+					<Option value="139">139</Option>
+					<Option value="140">140</Option>
+					<Option value="141">141</Option>
+					<Option value="142">142</Option>
+					<Option value="143">143</Option>
+					<Option value="144">144</Option>
+					<Option value="145">145</Option>
+					<Option value="146">146</Option>
+					<Option value="147">147</Option>
+					<Option value="148">148</Option>
+					<Option value="149">149</Option>
+					<Option value="150">150</Option>
+					<Option value="151">151</Option>
+					<Option value="152">152</Option>
+					<Option value="153">153</Option>
+					<Option value="154">154</Option>
+					<Option value="155">155</Option>
+					<Option value="156">156</Option>
+					<Option value="157">157</Option>
+					<Option value="158">158</Option>
+					<Option value="159">159</Option>
+					<Option value="160">160</Option>
+					<Option value="161">161</Option>
+					<Option value="162">162</Option>
+					<Option value="163">163</Option>
+					<Option value="164">164</Option>
+					<Option value="165">165</Option>
+					<Option value="166">166</Option>
+					<Option value="167">167</Option>
+					<Option value="168">168</Option>
+					<Option value="169">169</Option>
+					<Option value="170">170</Option>
+					<Option value="171">171</Option>
+					<Option value="172">172</Option>
+					<Option value="173">173</Option>
+					<Option value="174">174</Option>
+					<Option value="175">175</Option>
+					<Option value="176">176</Option>
+					<Option value="177">177</Option>
+					<Option value="178">178</Option>
+					<Option value="179">179</Option>
+					<Option value="180">180</Option>
+					<Option value="181">181</Option>
+					<Option value="182">182</Option>
+					<Option value="183">183</Option>
+					<Option value="184">184</Option>
+					<Option value="185">185</Option>
+					<Option value="186">186</Option>
+					<Option value="187">187</Option>
+					<Option value="188">188</Option>
+					<Option value="189">189</Option>
+					<Option value="190">190</Option>
+					<Option value="191">191</Option>
+					<Option value="192">192</Option>
+					<Option value="193">193</Option>
+					<Option value="194">194</Option>
+					<Option value="195">195</Option>
+					<Option value="196">196</Option>
+					<Option value="197">197</Option>
+					<Option value="198">198</Option>
+					<Option value="199">199</Option>
+					<Option value="200">200</Option>
+					<Option value="201">201</Option>
+					<Option value="202">202</Option>
+					<Option value="203">203</Option>
+					<Option value="204">204</Option>
+					<Option value="205">205</Option>
+					<Option value="206">206</Option>
+					<Option value="207">207</Option>
+					<Option value="208">208</Option>
+					<Option value="209">209</Option>
+					<Option value="210">210</Option>
+					<Option value="211">211</Option>
+					<Option value="212">212</Option>
+					<Option value="213">213</Option>
+					<Option value="214">214</Option>
+					<Option value="215">215</Option>
+					<Option value="216">216</Option>
+					<Option value="217">217</Option>
+					<Option value="218">218</Option>
+					<Option value="219">219</Option>
+					<Option value="220">220</Option>
+					<Option value="221">221</Option>
+					<Option value="222">222</Option>
+					<Option value="223">223</Option>
+					<Option value="224">224</Option>
+					<Option value="225">225</Option>
+					<Option value="226">226</Option>
+					<Option value="227">227</Option>
+					<Option value="228">228</Option>
+					<Option value="229">229</Option>
+					<Option value="230">230</Option>
+					<Option value="231">231</Option>
+					<Option value="232">232</Option>
+					<Option value="233">233</Option>
+					<Option value="234">234</Option>
+					<Option value="235">235</Option>
+					<Option value="236">236</Option>
+					<Option value="237">237</Option>
+					<Option value="238">238</Option>
+					<Option value="239">239</Option>
+					<Option value="240">240</Option>
+					<Option value="241">241</Option>
+					<Option value="242">242</Option>
+					<Option value="243">243</Option>
+					<Option value="244">244</Option>
+					<Option value="245">245</Option>
+					<Option value="246">246</Option>
+					<Option value="247">247</Option>
+					<Option value="248">248</Option>
+					<Option value="249">249</Option>
+					<Option value="250">250</Option>
+				</List>
+				<Label>User:</Label>
+			</Field>
+	</ConfigUI>
+	</Event>
+
+	<Event id="unlockedByMasterCode">
+		<Name>Lock unlocked by Master User Code</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+	</ConfigUI>
+	</Event>
+
+	<Event id="lockedByCode">
+		<Name>Lock locked by code</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+			<Field id="userNo" type="menu" defaultValue="Any">
+				<List>
+					<Option value="Any">Any User</Option>
+					<Option value="1">1</Option>
+					<Option value="2">2</Option>
+					<Option value="3">3</Option>
+					<Option value="4">4</Option>
+					<Option value="5">5</Option>
+					<Option value="6">6</Option>
+					<Option value="7">7</Option>
+					<Option value="8">8</Option>
+					<Option value="9">9</Option>
+					<Option value="10">10</Option>
+					<Option value="11">11</Option>
+					<Option value="12">12</Option>
+					<Option value="13">13</Option>
+					<Option value="14">14</Option>
+					<Option value="15">15</Option>
+					<Option value="16">16</Option>
+					<Option value="17">17</Option>
+					<Option value="18">18</Option>
+					<Option value="19">19</Option>
+					<Option value="20">20</Option>
+					<Option value="21">21</Option>
+					<Option value="22">22</Option>
+					<Option value="23">23</Option>
+					<Option value="24">24</Option>
+					<Option value="25">25</Option>
+					<Option value="26">26</Option>
+					<Option value="27">27</Option>
+					<Option value="28">28</Option>
+					<Option value="29">29</Option>
+					<Option value="30">30</Option>
+					<Option value="31">31</Option>
+					<Option value="32">32</Option>
+					<Option value="33">33</Option>
+					<Option value="34">34</Option>
+					<Option value="35">35</Option>
+					<Option value="36">36</Option>
+					<Option value="37">37</Option>
+					<Option value="38">38</Option>
+					<Option value="39">39</Option>
+					<Option value="40">40</Option>
+					<Option value="41">41</Option>
+					<Option value="42">42</Option>
+					<Option value="43">43</Option>
+					<Option value="44">44</Option>
+					<Option value="45">45</Option>
+					<Option value="46">46</Option>
+					<Option value="47">47</Option>
+					<Option value="48">48</Option>
+					<Option value="49">49</Option>
+					<Option value="50">50</Option>
+					<Option value="51">51</Option>
+					<Option value="52">52</Option>
+					<Option value="53">53</Option>
+					<Option value="54">54</Option>
+					<Option value="55">55</Option>
+					<Option value="56">56</Option>
+					<Option value="57">57</Option>
+					<Option value="58">58</Option>
+					<Option value="59">59</Option>
+					<Option value="60">60</Option>
+					<Option value="61">61</Option>
+					<Option value="62">62</Option>
+					<Option value="63">63</Option>
+					<Option value="64">64</Option>
+					<Option value="65">65</Option>
+					<Option value="66">66</Option>
+					<Option value="67">67</Option>
+					<Option value="68">68</Option>
+					<Option value="69">69</Option>
+					<Option value="70">70</Option>
+					<Option value="71">71</Option>
+					<Option value="72">72</Option>
+					<Option value="73">73</Option>
+					<Option value="74">74</Option>
+					<Option value="75">75</Option>
+					<Option value="76">76</Option>
+					<Option value="77">77</Option>
+					<Option value="78">78</Option>
+					<Option value="79">79</Option>
+					<Option value="80">80</Option>
+					<Option value="81">81</Option>
+					<Option value="82">82</Option>
+					<Option value="83">83</Option>
+					<Option value="84">84</Option>
+					<Option value="85">85</Option>
+					<Option value="86">86</Option>
+					<Option value="87">87</Option>
+					<Option value="88">88</Option>
+					<Option value="89">89</Option>
+					<Option value="90">90</Option>
+					<Option value="91">91</Option>
+					<Option value="92">92</Option>
+					<Option value="93">93</Option>
+					<Option value="94">94</Option>
+					<Option value="95">95</Option>
+					<Option value="96">96</Option>
+					<Option value="97">97</Option>
+					<Option value="98">98</Option>
+					<Option value="99">99</Option>
+					<Option value="100">100</Option>
+					<Option value="101">101</Option>
+					<Option value="102">102</Option>
+					<Option value="103">103</Option>
+					<Option value="104">104</Option>
+					<Option value="105">105</Option>
+					<Option value="106">106</Option>
+					<Option value="107">107</Option>
+					<Option value="108">108</Option>
+					<Option value="109">109</Option>
+					<Option value="110">110</Option>
+					<Option value="111">111</Option>
+					<Option value="112">112</Option>
+					<Option value="113">113</Option>
+					<Option value="114">114</Option>
+					<Option value="115">115</Option>
+					<Option value="116">116</Option>
+					<Option value="117">117</Option>
+					<Option value="118">118</Option>
+					<Option value="119">119</Option>
+					<Option value="120">120</Option>
+					<Option value="121">121</Option>
+					<Option value="122">122</Option>
+					<Option value="123">123</Option>
+					<Option value="124">124</Option>
+					<Option value="125">125</Option>
+					<Option value="126">126</Option>
+					<Option value="127">127</Option>
+					<Option value="128">128</Option>
+					<Option value="129">129</Option>
+					<Option value="130">130</Option>
+					<Option value="131">131</Option>
+					<Option value="132">132</Option>
+					<Option value="133">133</Option>
+					<Option value="134">134</Option>
+					<Option value="135">135</Option>
+					<Option value="136">136</Option>
+					<Option value="137">137</Option>
+					<Option value="138">138</Option>
+					<Option value="139">139</Option>
+					<Option value="140">140</Option>
+					<Option value="141">141</Option>
+					<Option value="142">142</Option>
+					<Option value="143">143</Option>
+					<Option value="144">144</Option>
+					<Option value="145">145</Option>
+					<Option value="146">146</Option>
+					<Option value="147">147</Option>
+					<Option value="148">148</Option>
+					<Option value="149">149</Option>
+					<Option value="150">150</Option>
+					<Option value="151">151</Option>
+					<Option value="152">152</Option>
+					<Option value="153">153</Option>
+					<Option value="154">154</Option>
+					<Option value="155">155</Option>
+					<Option value="156">156</Option>
+					<Option value="157">157</Option>
+					<Option value="158">158</Option>
+					<Option value="159">159</Option>
+					<Option value="160">160</Option>
+					<Option value="161">161</Option>
+					<Option value="162">162</Option>
+					<Option value="163">163</Option>
+					<Option value="164">164</Option>
+					<Option value="165">165</Option>
+					<Option value="166">166</Option>
+					<Option value="167">167</Option>
+					<Option value="168">168</Option>
+					<Option value="169">169</Option>
+					<Option value="170">170</Option>
+					<Option value="171">171</Option>
+					<Option value="172">172</Option>
+					<Option value="173">173</Option>
+					<Option value="174">174</Option>
+					<Option value="175">175</Option>
+					<Option value="176">176</Option>
+					<Option value="177">177</Option>
+					<Option value="178">178</Option>
+					<Option value="179">179</Option>
+					<Option value="180">180</Option>
+					<Option value="181">181</Option>
+					<Option value="182">182</Option>
+					<Option value="183">183</Option>
+					<Option value="184">184</Option>
+					<Option value="185">185</Option>
+					<Option value="186">186</Option>
+					<Option value="187">187</Option>
+					<Option value="188">188</Option>
+					<Option value="189">189</Option>
+					<Option value="190">190</Option>
+					<Option value="191">191</Option>
+					<Option value="192">192</Option>
+					<Option value="193">193</Option>
+					<Option value="194">194</Option>
+					<Option value="195">195</Option>
+					<Option value="196">196</Option>
+					<Option value="197">197</Option>
+					<Option value="198">198</Option>
+					<Option value="199">199</Option>
+					<Option value="200">200</Option>
+					<Option value="201">201</Option>
+					<Option value="202">202</Option>
+					<Option value="203">203</Option>
+					<Option value="204">204</Option>
+					<Option value="205">205</Option>
+					<Option value="206">206</Option>
+					<Option value="207">207</Option>
+					<Option value="208">208</Option>
+					<Option value="209">209</Option>
+					<Option value="210">210</Option>
+					<Option value="211">211</Option>
+					<Option value="212">212</Option>
+					<Option value="213">213</Option>
+					<Option value="214">214</Option>
+					<Option value="215">215</Option>
+					<Option value="216">216</Option>
+					<Option value="217">217</Option>
+					<Option value="218">218</Option>
+					<Option value="219">219</Option>
+					<Option value="220">220</Option>
+					<Option value="221">221</Option>
+					<Option value="222">222</Option>
+					<Option value="223">223</Option>
+					<Option value="224">224</Option>
+					<Option value="225">225</Option>
+					<Option value="226">226</Option>
+					<Option value="227">227</Option>
+					<Option value="228">228</Option>
+					<Option value="229">229</Option>
+					<Option value="230">230</Option>
+					<Option value="231">231</Option>
+					<Option value="232">232</Option>
+					<Option value="233">233</Option>
+					<Option value="234">234</Option>
+					<Option value="235">235</Option>
+					<Option value="236">236</Option>
+					<Option value="237">237</Option>
+					<Option value="238">238</Option>
+					<Option value="239">239</Option>
+					<Option value="240">240</Option>
+					<Option value="241">241</Option>
+					<Option value="242">242</Option>
+					<Option value="243">243</Option>
+					<Option value="244">244</Option>
+					<Option value="245">245</Option>
+					<Option value="246">246</Option>
+					<Option value="247">247</Option>
+					<Option value="248">248</Option>
+					<Option value="249">249</Option>
+					<Option value="250">250</Option>
+				</List>
+				<Label>User:</Label>
+			</Field>
+	</ConfigUI>
+	</Event>
+
+	<Event id="lockedByMasterCode">
+		<Name>Lock locked by Master User Code</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+	</ConfigUI>
+	</Event>
+
+	<Event id="invalidLimit">
+		<Name>Invalid code limit reached</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+	</ConfigUI>
+	</Event>
+
+	<Event id="deadboltJammed">
+		<Name>Deadbolt jammed</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+	</ConfigUI>
+	</Event>
+
+	<Event id="unlockedManually">
+		<Name>Lock unlocked manually</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="lockedManually">
+		<Name>Lock locked manually</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="unlockedByController">
+		<Name>Lock unlocked by Indigo</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="lockedByController">
+		<Name>Lock locked by Indigo</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="unlockedByRF">
+		<Name>Lock unlocked by RF</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="lockedByRF">
+		<Name>Lock locked by RF</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="relockedAuto">
+		<Name>Lock relocked automatically</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="lockManuallyFailed">
+		<Name>Lock failed to lock manually</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="lockRFFailed">
+		<Name>Lock failed to lock by RF</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="doorOpened">
+		<Name>Door opened</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="doorClosed">
+		<Name>Door closed</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+</Events>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<Devices>
+	<!-- This custom device illustrates how a plugin can update custom device
+	states which can be used in Device State Changed triggers, conditionals,
+	and inspected on Control Pages. The python runConcurrentThread() method
+	will update the states every second.
+	-->
+	<Device type="custom" id="doorLock">
+		<Name>Door Lock</Name>
+		<ConfigUI>
+			<Field id="deviceId" type="menu">
+				<Label>ZWave Door Lock:</Label>
+				<List class="indigo.devices" filter="indigo.zwave"/>
+			</Field>
+		</ConfigUI>
+		<States>
+			<State id="lockState">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Lock state</TriggerLabel>
+				<ControlPageLabel>Lock state</ControlPageLabel>
+			</State>
+			<State id="latchState">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Latch state</TriggerLabel>
+				<ControlPageLabel>Latch state</ControlPageLabel>
+			</State>
+			<State id="handleState">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Handle state</TriggerLabel>
+				<ControlPageLabel>Handle state</ControlPageLabel>
+			</State>
+			<State id="boltState">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Bolt state</TriggerLabel>
+				<ControlPageLabel>Bolt state</ControlPageLabel>
+			</State>
+			<State id="lastUser">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Last user</TriggerLabel>
+				<ControlPageLabel>Last user</ControlPageLabel>
+			</State>
+			<State id="alarmState">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Alarm state</TriggerLabel>
+				<ControlPageLabel>Alarm state</ControlPageLabel>
+			</State>
+		</States>
+		<UiDisplayStateId>lockState</UiDisplayStateId>
+	</Device>
+
+</Devices>
