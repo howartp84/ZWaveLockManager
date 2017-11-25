@@ -273,7 +273,7 @@
 				<Label>Lock:</Label>
 				<List class="indigo.devices" filter="self.doorLock"/>
 			</Field>
-			<Field id="userNo" type="textfield" defaultValue="251" readonly="yes">
+			<Field id="userNo" type="textfield" defaultValue="251" readonly="yes"></Field>
 	</ConfigUI>
 	</Event>
 
@@ -550,7 +550,7 @@
 				<Label>Lock:</Label>
 				<List class="indigo.devices" filter="self.doorLock"/>
 			</Field>
-			<Field id="userNo" type="textfield" defaultValue="251" readonly="yes">
+			<Field id="userNo" type="textfield" defaultValue="251" readonly="yes"></Field>
 	</ConfigUI>
 	</Event>
 
