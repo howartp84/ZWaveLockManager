@@ -38,6 +38,7 @@ class Plugin(indigo.PluginBase):
 		self.events["unlockedByMasterCode"] = dict()
 		self.events["lockedByMasterCode"] = dict()
 		self.events["invalidLimit"] = dict()
+		self.events["invalidCode"] = dict()
 		self.events["deadboltJammed"] = dict()
 		self.events["unlockedManually"] = dict()
 		self.events["lockedManually"] = dict()
@@ -117,7 +118,7 @@ class Plugin(indigo.PluginBase):
 		self.debugLog("Indigo lock selected: " + str(indigoDev))
 
 		userNo = str(pluginAction.props["userNo"])
-		userPin = str(pluginAction.props["userPin"])
+		userPin = str(self.substitute(str(pluginAction.props["userPin"])))
 
 		self.setPin(userNo,userPin,indigoDev)
 		#if len(userPin) not in [4,6,8,32]:
@@ -432,6 +433,7 @@ class Plugin(indigo.PluginBase):
 					self.triggerEvent("invalidLimit",int(bytes[5],16),"")
 				elif (bytes[14] == "14"):
 					indigo.server.log(u"Status: Invalid user code entered when unlocking door [Node: %s]" % int(bytes[5],16))
+					self.triggerInvalidCode(int(bytes[5],16),)
 				elif (bytes[14] == "15"):
 					indigo.server.log(u"Status: Invalid user code entered when locking door [Node: %s]" % int(bytes[5],16))
 				elif (bytes[14] == "16"):
@@ -550,6 +552,7 @@ class Plugin(indigo.PluginBase):
 		self.zwaveCommandReceived(cmd)
 		cmd = {'bytes': [0x01,0x0E,0x00,0x04,0x00,0x2C,0x08,0x63,0x03,0x09,0x01,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0xFF], 'nodeId': None, 'endpoint': None}
 		self.zwaveCommandReceived(cmd)
+		
 
 	def testHex(self):
 		cmd = {'bytes': [0x01,0x0A,0x00,0x04,0x00,0x2C,0x04,0x71,0x05,0x13,0x01,0xFF], 'nodeId': None, 'endpoint': None} #Unlocked user 1
@@ -559,6 +562,8 @@ class Plugin(indigo.PluginBase):
 		cmd = {'bytes': [0x01,0x0A,0x00,0x04,0x00,0x2C,0x04,0x71,0x05,0xA1,0x01,0xFF], 'nodeId': None, 'endpoint': None} #Limit reached
 		self.zwaveCommandReceived(cmd)
 		cmd = {'bytes': [0x01,0x0A,0x00,0x04,0x00,0x2C,0x04,0x71,0x05,0x09,0x01,0xFF], 'nodeId': None, 'endpoint': None} #Deadbolt jammed
+		self.zwaveCommandReceived(cmd)
+		cmd = {'bytes': [0x01,0x0A,0x00,0x04,0x00,0x2C,0x04,0x71,0x05,0x14,0x01,0xFF], 'nodeId': None, 'endpoint': None}
 		self.zwaveCommandReceived(cmd)
 		self.debugLog(u"lockIDs: %s" % (str(self.lockIDs)))
 
@@ -613,6 +618,26 @@ class Plugin(indigo.PluginBase):
 					indigo.trigger.execute(trigger)
 					self.debugLog(u"Executing trigger")
 
+	def triggerInvalidCode(self,eventNode,inCode):
+		#eventNode is the ZWave Node ID (44)
+		#inCode is the wrongly entered code
+		self.debugLog(u"triggerInvalidCode called")
+		for trigger in self.events["invalidCode"]:
+			#dAddress is the Indigo device ID (12345678) of the dummy doorlock
+			#dNodeID is the Indigo device's ZWave Node ID (44)
+			dAddress = self.events[eventType][trigger].pluginProps["deviceAddress"]
+			#dNodeID = indigo.devices[int(dAddress)].ownerProps['address']
+			dNodeID = self.nodeFromDev[int(dAddress)]
+			dCode = self.events[eventType][trigger].pluginProps["invalidCode"]
+			self.debugLog(u"---")
+			self.debugLog(u"dNodeID:   #%s#" % (dNodeID))
+			self.debugLog(u"eventNode: #%s#" % (eventNode))
+			self.debugLog(u"dCode:   #%s#" % (str(dCode)))
+			self.debugLog(u"inCode:    #%s#" % (str(inCode)))
+			if (str(eventNode) == str(dNodeID)):
+				if ((str(dCodeNo) == "") or (str(dCode) == str(inCode))):
+					indigo.trigger.execute(trigger)
+					self.debugLog(u"Executing trigger")
 
 	def setPin(self,userNo,userPin,indigoDev):
 		node = self.nodeFromDev[int(indigoDev)]

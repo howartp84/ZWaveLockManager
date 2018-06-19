@@ -561,8 +561,21 @@
 				<Label>Lock:</Label>
 				<List class="indigo.devices" filter="self.doorLock"/>
 			</Field>
-	</ConfigUI>
+		</ConfigUI>
 	</Event>
+	
+	<!--<Event id="invalidCode">
+		<Name>Invalid code entered</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+			<Field id="invalidCode" type="textfield">
+				<Label>Code:</Label>
+			</Field>
+		</ConfigUI>
+	</Event>-->
 
 	<Event id="deadboltJammed">
 		<Name>Deadbolt jammed</Name>
