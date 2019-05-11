@@ -433,7 +433,7 @@ class Plugin(indigo.PluginBase):
 					self.triggerEvent("invalidLimit",int(bytes[5],16),"")
 				elif (bytes[14] == "14"):
 					indigo.server.log(u"Status: Invalid user code entered when unlocking door [Node: %s]" % int(bytes[5],16))
-					self.triggerInvalidCode(int(bytes[5],16),)
+					self.triggerInvalidCode(int(bytes[5],16),"")
 				elif (bytes[14] == "15"):
 					indigo.server.log(u"Status: Invalid user code entered when locking door [Node: %s]" % int(bytes[5],16))
 				elif (bytes[14] == "16"):
