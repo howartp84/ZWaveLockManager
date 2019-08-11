@@ -42,6 +42,7 @@ class Plugin(indigo.PluginBase):
 		self.events["deadboltJammed"] = dict()
 		self.events["unlockedManually"] = dict()
 		self.events["lockedManually"] = dict()
+		self.events["lockedManuallyOneTouch"] = dict()
 		self.events["unlockedByController"] = dict()
 		self.events["lockedByController"] = dict()
 		self.events["unlockedByRF"] = dict()
@@ -320,7 +321,7 @@ class Plugin(indigo.PluginBase):
 					self.triggerEvent("lockedManually",int(bytes[5],16),"")
 				elif (bytes[10] == "02"):
 					indigo.server.log(u"Status: Door locked manually (one-touch button) [Node: %s]" % (int(bytes[5],16)))
-					self.triggerEvent("lockedManually",int(bytes[5],16),"")
+					self.triggerEvent("lockedManuallyOneTouch",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Locked")
 			elif (bytes[9] == "16"):
 				indigo.server.log(u"Status: Door unlocked manually [Node: %s]" % (int(bytes[5],16)))

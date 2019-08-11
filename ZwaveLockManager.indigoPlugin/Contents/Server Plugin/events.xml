@@ -606,6 +606,16 @@
 			</Field>
 		</ConfigUI>
 	</Event>
+	
+	<Event id="lockedManuallyOneTouch">
+		<Name>Lock locked manually (one-touch button)</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Lock:</Label>
+				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
 
 	<Event id="unlockedByController">
 		<Name>Lock unlocked by Indigo</Name>
