@@ -158,6 +158,20 @@ class Plugin(indigo.PluginBase):
 		#codeStr = [99, 02, int(userNo)]
 		#indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 
+	def getLockMode(self,pluginAction):
+		self.debugLog("getLockMode action called")
+		indigoDev = pluginAction.deviceId
+		
+		self.debugLog(str(self.nodeFromDev))
+		node = self.nodeFromDev[int(indigoDev)]
+		self.debugLog("Node: " + str(node))
+		indigo.server.log("Requesting Lock Mode")
+
+		codeStr = [112, 05, 1] #112 = 0x70 Configuration, 5 = 0x05 GET
+
+		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
+
+
 	def getPinStr(self,inPin):
 		if len(inPin) in [4,5,6,7,8]:
 			return [int(ord(inPin[i:i+1])) for i in xrange(0,len(inPin))]
@@ -694,12 +708,3 @@ class Plugin(indigo.PluginBase):
 		dev=indigo.devices[self.devFromNode[nodeID]]
 		dev.updateStateOnServer(state, newState)
 
-	def getLockMode(self,indigoDev):
-		self.debugLog(str(self.nodeFromDev))
-		node = self.nodeFromDev[int(indigoDev)]
-		self.debugLog("Node: " + str(node))
-		indigo.server.log("Requesting Lock Mode")
-
-		codeStr = [112, 04, 1] #112 = 0x70 Configuration, 4 = 0x04 GET
-
-		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
