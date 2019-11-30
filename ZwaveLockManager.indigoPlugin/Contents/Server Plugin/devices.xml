@@ -45,6 +45,11 @@
 				<TriggerLabel>Alarm state</TriggerLabel>
 				<ControlPageLabel>Alarm state</ControlPageLabel>
 			</State>
+			<State id="doorMode">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Door mode</TriggerLabel>
+				<ControlPageLabel>Door mode</ControlPageLabel>
+			</State>
 		</States>
 		<UiDisplayStateId>lockState</UiDisplayStateId>
 	</Device>

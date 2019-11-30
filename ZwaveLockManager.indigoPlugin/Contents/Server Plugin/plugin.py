@@ -445,7 +445,7 @@ class Plugin(indigo.PluginBase):
 					indigo.server.log(u"Status: Door is closed [Node: %s]" % int(bytes[5],16))
 					self.triggerEvent("doorClosed",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Closed")
-			elif (bytes[13] == "07"):
+			elif (bytes[13] == "07"): #Home Security
 				if (bytes[14] == "01"):
 					indigo.server.log(u"Status: Previous alarm/event cleared [Node: %s]" % int(bytes[5],16))
 				elif (bytes[14] == "02"):
@@ -534,6 +534,26 @@ class Plugin(indigo.PluginBase):
 			elif (bytes[11] == "07"):
 				indigo.server.log(u"Latch closed, Bolt unlocked, Door closed [Node: %s]" % (int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"handleState","Closed")
+				
+		if (bytes[7] == "70") and (bytes[9] == "01"): #COMMAND_CLASS_CONFIGURATION (Param 1) = Door Lock Mode (eg Away)
+			#self.debugLog(u"-----")
+			#self.debugLog(u"Door Mode Report received:")
+			self.debugLog(u"Door Mode: %s" % (byteListStr))
+			self.debugLog("")
+			self.debugLog(u"Node:  %s" % (int(bytes[5],16)))
+			self.debugLog(u"Mode:  %s" % (int(bytes[11],16)))
+			if (bytes[11] == "00"):
+				indigo.server.log(u"Status: Door Mode is Home-ManualLock [Node: %s]" % (int(bytes[5],16)))
+				self.updateState(int(bytes[5],16),"doorMode","Home-Manual")
+			elif (bytes[11] == "01"):
+				indigo.server.log(u"Status: Door Mode is Home-AutoLock [Node: %s]" % (int(bytes[5],16)))
+				self.updateState(int(bytes[5],16),"doorMode","Home-Manual")
+			elif (bytes[11] == "02"):
+				indigo.server.log(u"Status: Door Mode is Away-ManualLock [Node: %s]" % (int(bytes[5],16)))
+				self.updateState(int(bytes[5],16),"doorMode","Home-Manual")
+			elif (bytes[11] == "03"):
+				indigo.server.log(u"Status: Door Mode is Away-Autolock [Node: %s]" % (int(bytes[5],16)))
+				self.updateState(int(bytes[5],16),"doorMode","Home-Manual")
 
 
 	def testSet(self):
@@ -553,7 +573,7 @@ class Plugin(indigo.PluginBase):
 		self.zwaveCommandReceived(cmd)
 		cmd = {'bytes': [0x01,0x0E,0x00,0x04,0x00,0x2C,0x08,0x63,0x03,0x09,0x01,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0xFF], 'nodeId': None, 'endpoint': None}
 		self.zwaveCommandReceived(cmd)
-		
+
 
 	def testHex(self):
 		cmd = {'bytes': [0x01,0x0A,0x00,0x04,0x00,0x2C,0x04,0x71,0x05,0x13,0x01,0xFF], 'nodeId': None, 'endpoint': None} #Unlocked user 1
@@ -674,4 +694,12 @@ class Plugin(indigo.PluginBase):
 		dev=indigo.devices[self.devFromNode[nodeID]]
 		dev.updateStateOnServer(state, newState)
 
+	def getLockMode(self,indigoDev):
+		self.debugLog(str(self.nodeFromDev))
+		node = self.nodeFromDev[int(indigoDev)]
+		self.debugLog("Node: " + str(node))
+		indigo.server.log("Requesting Lock Mode")
 
+		codeStr = [112, 04, 1] #112 = 0x70 Configuration, 4 = 0x04 GET
+
+		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)

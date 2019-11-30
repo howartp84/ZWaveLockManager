@@ -848,4 +848,9 @@
 		</ConfigUI>
 	</Action>
 
+	<Action id="getLockMode" deviceFilter="self.doorLock">
+		<Name>Get Lock Mode (ID Lock 100/150 Only)</Name>
+		<CallbackMethod>getLockMode</CallbackMethod>
+	</Action>
+
 </Actions>
