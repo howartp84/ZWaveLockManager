@@ -158,8 +158,8 @@ class Plugin(indigo.PluginBase):
 		#codeStr = [99, 02, int(userNo)]
 		#indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 
-	def getLockMode(self,pluginAction):
-		self.debugLog("getLockMode action called")
+	def getModeIDLock(self,pluginAction):
+		self.debugLog("getModeIDLock action called")
 		indigoDev = pluginAction.deviceId
 		
 		self.debugLog(str(self.nodeFromDev))
@@ -170,7 +170,7 @@ class Plugin(indigo.PluginBase):
 		codeStr = [112, 05, 1] #112 = 0x70 Configuration, 5 = 0x05 GET
 
 		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
-
+		
 
 	def getPinStr(self,inPin):
 		if len(inPin) in [4,5,6,7,8]:
@@ -273,7 +273,20 @@ class Plugin(indigo.PluginBase):
 
 		#indigo.server.log("Sending raw command: [" + convertListToStr(codeStr) + "] to device " + str(indigoDev))
 
+	def setModeIDLock(self, pluginAction):
+		self.debugLog("setModeIDLock action called")
+		indigoDev = pluginAction.deviceId
+		self.debugLog("Indigo lock selected: " + str(indigoDev))
 
+		modeVal = str(pluginAction.props["modeVal"])
+
+		indigo.server.log("Setting operating mode to %s :" % modeVal)
+
+		codeStr = [112, 4, 1, 1, int(modeVal)]
+
+		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
+
+		#indigo.server.log("Sending raw command: [" + convertListToStr(codeStr) + "] to device " + str(indigoDev))
 
 
 ########################################

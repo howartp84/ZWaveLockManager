@@ -847,10 +847,26 @@
 			</Field>
 		</ConfigUI>
 	</Action>
+	
+	<Action id="setModeIDLock" deviceFilter="self.doorLock"> <!--ID Lock AwayMode is Param 1)-->
+		<Name>Set Operating Mode (ID Lock 100/150)</Name>
+		<CallbackMethod>setModeIDLock</CallbackMethod>
+		<ConfigUI>
+			<Field id="modeVal" type="menu" defaultValue="normal">
+				<Label>Set operating mode to:</Label>
+				<List>
+					<Option value="0">Home - Manual Lock</Option>
+					<Option value="1">Home - Auto Lock</Option>
+					<Option value="2">Away - Manual Lock</Option>
+					<Option value="3">Away - Auto Lock</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+	</Action>
 
-	<Action id="getLockMode" deviceFilter="self.doorLock">
+	<Action id="getModeIDLock" deviceFilter="self.doorLock">
 		<Name>Get Lock Mode (ID Lock 100/150 Only)</Name>
-		<CallbackMethod>getLockMode</CallbackMethod>
+		<CallbackMethod>getModeIDLock</CallbackMethod>
 	</Action>
 
 </Actions>
