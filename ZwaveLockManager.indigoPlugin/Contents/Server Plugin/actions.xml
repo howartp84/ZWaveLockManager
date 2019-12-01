@@ -848,7 +848,9 @@
 		</ConfigUI>
 	</Action>
 	
-	<Action id="setModeIDLock" deviceFilter="self.doorLock"> <!--ID Lock AwayMode is Param 1)-->
+	<Action id="sep1" />
+	
+	<Action id="setModeIDLock" deviceFilter="self.doorLock" uiPath="ID Lock 100/150 Specific"> <!--ID Lock AwayMode is Param 1)-->
 		<Name>Set Operating Mode (ID Lock 100/150)</Name>
 		<CallbackMethod>setModeIDLock</CallbackMethod>
 		<ConfigUI>
@@ -864,7 +866,7 @@
 		</ConfigUI>
 	</Action>
 
-	<Action id="getModeIDLock" deviceFilter="self.doorLock">
+	<Action id="getModeIDLock" deviceFilter="self.doorLock" uiPath="ID Lock 100/150 Specific">
 		<Name>Get Lock Mode (ID Lock 100/150 Only)</Name>
 		<CallbackMethod>getModeIDLock</CallbackMethod>
 	</Action>
