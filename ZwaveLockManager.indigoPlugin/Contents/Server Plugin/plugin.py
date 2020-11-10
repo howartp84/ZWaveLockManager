@@ -161,7 +161,7 @@ class Plugin(indigo.PluginBase):
 	def getModeIDLock(self,pluginAction):
 		self.debugLog("getModeIDLock action called")
 		indigoDev = pluginAction.deviceId
-		
+
 		self.debugLog(str(self.nodeFromDev))
 		node = self.nodeFromDev[int(indigoDev)]
 		self.debugLog("Node: " + str(node))
@@ -170,7 +170,7 @@ class Plugin(indigo.PluginBase):
 		codeStr = [112, 05, 1] #112 = 0x70 Configuration, 5 = 0x05 GET
 
 		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
-		
+
 
 	def getPinStr(self,inPin):
 		if len(inPin) in [4,5,6,7,8]:
@@ -225,7 +225,11 @@ class Plugin(indigo.PluginBase):
 		relockOn = str(pluginAction.props["relockOn"])
 		relockTime = str(pluginAction.props["relockTime"])
 
-		if relockOn:
+		#self.debugLog(str(pluginAction.props))
+
+		self.debugLog("Relock is: %s" % relockOn)
+
+		if relockOn == "On":
 			indigo.server.log("Enabling auto relock mode with a timeout of %s seconds:" % str(relockTime))
 			codeStr = [112, 04, 02, 01, 255]
 			indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
@@ -561,7 +565,7 @@ class Plugin(indigo.PluginBase):
 			elif (bytes[11] == "07"):
 				indigo.server.log(u"Latch closed, Bolt unlocked, Door closed [Node: %s]" % (int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"handleState","Closed")
-				
+
 		if (bytes[7] == "70") and (bytes[9] == "01"): #COMMAND_CLASS_CONFIGURATION (Param 1) = Door Lock Mode (eg Away)
 			#self.debugLog(u"-----")
 			#self.debugLog(u"Door Mode Report received:")
