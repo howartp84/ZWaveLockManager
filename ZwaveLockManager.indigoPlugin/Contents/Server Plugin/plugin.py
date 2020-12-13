@@ -586,6 +586,16 @@ class Plugin(indigo.PluginBase):
 				indigo.server.log(u"Status: Door Mode is Away-Autolock [Node: %s]" % (int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"doorMode","Home-Manual")
 
+		if (bytes[7] == "6F") and (bytes[8] == "01"): #COMMAND_CLASS_ENTRY_CONTROL = Keypad entry
+			self.debugLog(u"-----")
+			self.debugLog(u"Keypad entry code received:")
+			self.debugLog(u"Raw command: %s" % (byteListStr))
+			self.debugLog(u"Node:  %s" % (int(bytes[5],16)))
+			if (bytes[10] == "02"): #01 = RAW, 02 = ASCII, 03 = MD5
+				eventType = bytes[11] #Enter, Arm, Disarm, etc
+				retCode = ' '.join([chr(int(bytex, 16)) for bytex in bytes[1:len(bytes)-1]])
+				self.debugLog(u"Code entered: {}".format(str(retCode)))
+				self.debugLog(u"Event type: {}".format(str(eventType)))
 
 	def testSet(self):
 		cmd = {'bytes': [0x01,0x0A,0x00,0x04,0x00,0x2C,0x04,0x71,0x05,0x70,0x09,0xFF], 'nodeId': None, 'endpoint': None}

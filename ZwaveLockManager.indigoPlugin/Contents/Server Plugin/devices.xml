@@ -54,4 +54,14 @@
 		<UiDisplayStateId>lockState</UiDisplayStateId>
 	</Device>
 
+	<Device type="custom" id="keyPad">
+		<Name>Keypad</Name>
+		<ConfigUI>
+			<Field id="deviceId" type="menu">
+				<Label>ZWave Keypad:</Label>
+				<List class="indigo.devices" filter="indigo.zwave"/>
+			</Field>
+		</ConfigUI>
+	</Device>
+
 </Devices>

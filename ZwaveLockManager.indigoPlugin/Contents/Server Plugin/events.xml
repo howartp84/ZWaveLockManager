@@ -563,7 +563,7 @@
 			</Field>
 		</ConfigUI>
 	</Event>
-	
+
 	<!--<Event id="invalidCode">
 		<Name>Invalid code entered</Name>
 		<ConfigUI>
@@ -606,7 +606,7 @@
 			</Field>
 		</ConfigUI>
 	</Event>
-	
+
 	<Event id="lockedManuallyOneTouch">
 		<Name>Lock locked manually (one-touch button)</Name>
 		<ConfigUI>
@@ -703,6 +703,48 @@
 			<Field id="deviceAddress" type="menu">
 				<Label>Lock:</Label>
 				<List class="indigo.devices" filter="self.doorLock"/>
+			</Field>
+		</ConfigUI>
+	</Event>
+
+	<Event id="codeEntered">
+		<Name>Code entered:</Name>
+		<ConfigUI>
+			<Field id="deviceAddress" type="menu">
+				<Label>Keypad:</Label>
+				<List class="indigo.devices" filter="self.keyPad"/>
+			</Field>
+			<Field id="code" type="textfield">
+				<Label>User:</Label>
+			</Field>
+			<Field id="term" type="menu" defaultValue="Enter">
+				<List>
+					<Option value="1">Timeout</Option>
+					<Option value="2">Enter</Option>
+					<Option value="3">Disarm</Option>
+					<Option value="4">Arm</Option>
+					<Option value="5">Arm_Away</Option>
+					<Option value="6">Arm_Home</Option>
+					<Option value="7">Exit Delay</Option>
+					<Option value="8">Arm_1</Option>
+					<Option value="9">Arm_2</Option>
+					<Option value="10">Arm_3</Option>
+					<Option value="11">Arm_4</Option>
+					<Option value="12">Arm_5</Option>
+					<Option value="13">Arm_6</Option>
+					<Option value="15">Bell</Option>
+					<Option value="16">Fire</Option>
+					<Option value="17">Police</Option>
+					<Option value="18">Panic</Option>
+					<Option value="19">Medical</Option>
+					<Option value="20">Open/Up</Option>
+					<Option value="21">Close/Down</Option>
+					<Option value="22">Lock</Option>
+					<Option value="23">Unlock</Option>
+					<Option value="24">Test</Option>
+					<Option value="25">Cancel</Option>
+				</List>
+				<Label>Event Type / Key pressed:</Label>
 			</Field>
 		</ConfigUI>
 	</Event>
