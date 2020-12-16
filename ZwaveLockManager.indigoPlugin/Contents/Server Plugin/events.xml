@@ -707,44 +707,52 @@
 		</ConfigUI>
 	</Event>
 
+	<Event id="space">
+	</Event>
+
 	<Event id="codeEntered">
-		<Name>Code entered:</Name>
+		<Name>Keypad - Code entered</Name>
 		<ConfigUI>
 			<Field id="deviceAddress" type="menu">
 				<Label>Keypad:</Label>
 				<List class="indigo.devices" filter="self.keyPad"/>
 			</Field>
 			<Field id="code" type="textfield">
-				<Label>User:</Label>
+				<Label>Code:</Label>
 			</Field>
-			<Field id="term" type="menu" defaultValue="Enter">
+			<Field id="eventKey" type="menu" defaultValue="2">
 				<List>
-					<Option value="1">Timeout</Option>
-					<Option value="2">Enter</Option>
-					<Option value="3">Disarm</Option>
-					<Option value="4">Arm</Option>
-					<Option value="5">Arm_Away</Option>
-					<Option value="6">Arm_Home</Option>
-					<Option value="7">Exit Delay</Option>
-					<Option value="8">Arm_1</Option>
-					<Option value="9">Arm_2</Option>
-					<Option value="10">Arm_3</Option>
-					<Option value="11">Arm_4</Option>
-					<Option value="12">Arm_5</Option>
-					<Option value="13">Arm_6</Option>
-					<Option value="15">Bell</Option>
-					<Option value="16">Fire</Option>
-					<Option value="17">Police</Option>
-					<Option value="18">Panic</Option>
-					<Option value="19">Medical</Option>
-					<Option value="20">Open/Up</Option>
-					<Option value="21">Close/Down</Option>
-					<Option value="22">Lock</Option>
-					<Option value="23">Unlock</Option>
-					<Option value="24">Test</Option>
-					<Option value="25">Cancel</Option>
+					<Option value="00">Caching</Option>
+					<Option value="01">Timeout</Option>
+					<Option value="02">Enter</Option>
+					<Option value="03">Disarm</Option>
+					<Option value="04">Arm</Option>
+					<Option value="05">Arm_Away</Option>
+					<Option value="06">Arm_Home</Option>
+					<Option value="07">Exit Delay</Option>
+					<Option value="08">Arm_1</Option>
+					<Option value="09">Arm_2</Option>
+					<Option value="0A">Arm_3</Option>
+					<Option value="0B">Arm_4</Option>
+					<Option value="0C">Arm_5</Option>
+					<Option value="0D">Arm_6</Option>
+					<Option value="0E">RFID</Option>
+					<Option value="0F">Bell</Option>
+					<Option value="10">Fire</Option>
+					<Option value="11">Police</Option>
+					<Option value="12">Panic</Option>
+					<Option value="13">Medical</Option>
+					<Option value="14">Open/Up</Option>
+					<Option value="15">Close/Down</Option>
+					<Option value="16">Lock</Option>
+					<Option value="17">Unlock</Option>
+					<Option value="18">Test</Option>
+					<Option value="19">Cancel</Option>
 				</List>
 				<Label>Event Type / Key pressed:</Label>
+			</Field>
+			<Field id="label1" type="label">
+				<Label>Ring Keypad v1 supports Enter, Home, Away, Disarm and Cancel.</Label>
 			</Field>
 		</ConfigUI>
 	</Event>

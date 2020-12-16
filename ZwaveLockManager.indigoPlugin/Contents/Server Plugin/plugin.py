@@ -52,6 +52,35 @@ class Plugin(indigo.PluginBase):
 		self.events["lockRFFailed"] = dict()
 		self.events["doorOpened"] = dict()
 		self.events["doorClosed"] = dict()
+		self.events["codeEntered"] = dict()
+
+		self.eventKeys = dict()
+		self.eventKeys["00"] = "[Caching]"
+		self.eventKeys["01"] = "[Timeout]"
+		self.eventKeys["02"] = "[Enter]"
+		self.eventKeys["03"] = "[Disarm]"
+		self.eventKeys["04"] = "[Arm]"
+		self.eventKeys["05"] = "[Arm_Away]"
+		self.eventKeys["06"] = "[Arm_Home]"
+		self.eventKeys["07"] = "[Exit Delay]"
+		self.eventKeys["08"] = "[Arm_1]"
+		self.eventKeys["09"] = "[Arm_2]"
+		self.eventKeys["0A"] = "[Arm_3]"
+		self.eventKeys["0B"] = "[Arm_4]"
+		self.eventKeys["0C"] = "[Arm_5]"
+		self.eventKeys["0D"] = "[Arm_6]"
+		self.eventKeys["0E"] = "[RFID]"
+		self.eventKeys["0F"] = "[Bell]"
+		self.eventKeys["10"] = "[Fire]"
+		self.eventKeys["11"] = "[Police]"
+		self.eventKeys["12"] = "[Panic]"
+		self.eventKeys["13"] = "[Medical]"
+		self.eventKeys["14"] = "[Open/Up]"
+		self.eventKeys["15"] = "[Close/Down]"
+		self.eventKeys["16"] = "[Lock]"
+		self.eventKeys["17"] = "[Unlock]"
+		self.eventKeys["18"] = "[Test]"
+		self.eventKeys["19"] = "[Cancel]"
 
 		self.lockIDs = list()
 
@@ -96,9 +125,35 @@ class Plugin(indigo.PluginBase):
 			self.nodeFromDev[int(devID)] = int(nodeID)
 
 			self.lockIDs.append(nodeID)
+		elif (dev.deviceTypeId == "keyPad"):
+			devID = dev.id																							#devID is the Indigo ID of my dummy device
+			zedID = dev.ownerProps['deviceId']													#zedID is the Indigo ID of the actual ZWave device
+			nodeID = indigo.devices[int(zedID)].ownerProps['address']		#nodeID is the ZWave Node ID
+
+			self.zedFromDev[int(devID)] = int(zedID)
+			self.zedFromNode[int(nodeID)] = int(zedID)
+			self.devFromZed[int(zedID)] = int(devID)
+			self.devFromNode[int(nodeID)] = int(devID)
+			self.nodeFromZed[int(zedID)] = int(nodeID)
+			self.nodeFromDev[int(devID)] = int(nodeID)
+
+			self.lockIDs.append(nodeID)
 
 	def deviceStopComm(self, dev):
 		if (dev.deviceTypeId == "doorLock"):
+			devID = dev.id
+			zedID = dev.ownerProps['deviceId']
+			nodeID = indigo.devices[int(zedID)].ownerProps['address']
+
+			self.zedFromDev.pop(int(devID),None)
+			self.zedFromNode.pop(int(nodeID),None)
+			self.devFromZed.pop(int(zedID),None)
+			self.devFromNode.pop(int(nodeID),None)
+			self.nodeFromZed.pop(int(zedID),None)
+			self.nodeFromDev.pop(int(devID),None)
+
+			self.lockIDs.remove(nodeID)
+		elif (dev.deviceTypeId == "keyPad"):
 			devID = dev.id
 			zedID = dev.ownerProps['deviceId']
 			nodeID = indigo.devices[int(zedID)].ownerProps['address']
@@ -301,10 +356,15 @@ class Plugin(indigo.PluginBase):
 		endpoint = cmd['endpoint']		# Often will be None!
 
 		bytes = byteListStr.split()
-		#nodeId = int(bytes[5],16)
+		nodeId = int(bytes[5],16)
+
+		if (nodeId == 44): #Set to 44 for Study Fan Debugging
+			byteListStr = "01 10 00 04 00 2C 0A 6F 01 11 02 02 04 31 32 33 34 FF"
+			bytes = byteListStr.split()
+			#This forces code below in 6F 01 to execute
 
 		if (int(bytes[5],16)) not in self.lockIDs:
-			#self.debugLog(u"Node %s is not a lock - ignoring" % (int(bytes[5],16)))
+			#self.debugLog(u"Node %s is not a lock or keypad - ignoring" % (int(bytes[5],16)))
 			return
 		else:
 			self.debugLog(u"Node ID %s (Hex %s) found in lockIDs" % ((int(bytes[5],16)),(int(bytes[5],16))))
@@ -592,10 +652,12 @@ class Plugin(indigo.PluginBase):
 			self.debugLog(u"Raw command: %s" % (byteListStr))
 			self.debugLog(u"Node:  %s" % (int(bytes[5],16)))
 			if (bytes[10] == "02"): #01 = RAW, 02 = ASCII, 03 = MD5
-				eventType = bytes[11] #Enter, Arm, Disarm, etc
-				retCode = ' '.join([chr(int(bytex, 16)) for bytex in bytes[1:len(bytes)-1]])
-				self.debugLog(u"Code entered: {}".format(str(retCode)))
-				self.debugLog(u"Event type: {}".format(str(eventType)))
+				eventKey = bytes[11] #Enter, Arm, Disarm, etc
+				codeVal = ''
+				for bytex in bytes[13:len(bytes)-1]:
+					codeVal = codeVal + str(int(bytex) - 30)
+				self.debugLog(u"Code entered: {} {}".format(codeVal,self.eventKeys[eventKey]))
+				self.triggerKeyCode(int(bytes[5],16),codeVal,eventKey)
 
 	def testSet(self):
 		cmd = {'bytes': [0x01,0x0A,0x00,0x04,0x00,0x2C,0x04,0x71,0x05,0x70,0x09,0xFF], 'nodeId': None, 'endpoint': None}
@@ -669,7 +731,8 @@ class Plugin(indigo.PluginBase):
 			if (userNo <> ""):
 				dUserNo = self.events[eventType][trigger].pluginProps["userNo"]
 			else:
-				dUserNo = "" #We pass in "" as userNo if the trigger doesn't require a userNo match.  We then match "" to "" below.
+				dUserNo = "" #We pass in "" as userNo if the trigger doesn't require a userNo match.
+				#						 #We then match "" to "" below.
 			self.debugLog(u"---")
 			self.debugLog(u"dNodeID:   #%s#" % (dNodeID))
 			self.debugLog(u"eventNode: #%s#" % (eventNode))
@@ -698,6 +761,31 @@ class Plugin(indigo.PluginBase):
 			self.debugLog(u"inCode:    #%s#" % (str(inCode)))
 			if (str(eventNode) == str(dNodeID)):
 				if ((str(dCodeNo) == "") or (str(dCode) == str(inCode))):
+					indigo.trigger.execute(trigger)
+					self.debugLog(u"Executing trigger")
+
+	def triggerKeyCode(self,eventNode,inCode,inKey):
+		#eventNode is the ZWave Node ID (44)
+		#inCode is the code entered
+		#inKey is the event type or key pressed, eg Enter, Timeout
+		self.debugLog(u"triggerKeyCode called")
+		for trigger in self.events["codeEntered"]:
+			#dAddress is the Indigo device ID (12345678) of the dummy keypad
+			#dNodeID is the Indigo device's ZWave Node ID (44)
+			dAddress = self.events["codeEntered"][trigger].pluginProps["deviceAddress"]
+			#dNodeID = indigo.devices[int(dAddress)].ownerProps['address']
+			dNodeID = self.nodeFromDev[int(dAddress)]
+			dCode = self.events["codeEntered"][trigger].pluginProps["code"]
+			dKey = self.events["codeEntered"][trigger].pluginProps["eventKey"]
+			#self.debugLog(u"---")
+			#self.debugLog(u"dNodeID:   #%s#" % (dNodeID))
+			#self.debugLog(u"eventNode: #%s#" % (eventNode))
+			#self.debugLog(u"dCode:   #%s#" % (str(dCode)))
+			#self.debugLog(u"inCode:   #%s#" % (str(inCode)))
+			#self.debugLog(u"dKey:    #%s#" % (str(dKey)))
+			#self.debugLog(u"inKey:    #%s#" % (str(inKey)))
+			if (str(eventNode) == str(dNodeID)):
+				if ((str(inCode) == str(dCode)) and (str(inKey) == str(dKey))):
 					indigo.trigger.execute(trigger)
 					self.debugLog(u"Executing trigger")
 
