@@ -847,9 +847,9 @@
 			</Field>
 		</ConfigUI>
 	</Action>
-	
+
 	<Action id="sep1" />
-	
+
 	<Action id="setModeIDLock" deviceFilter="self.doorLock" uiPath="ID Lock 100/150 Specific"> <!--ID Lock AwayMode is Param 1)-->
 		<Name>Set Operating Mode (ID Lock 100/150)</Name>
 		<CallbackMethod>setModeIDLock</CallbackMethod>
@@ -869,6 +869,28 @@
 	<Action id="getModeIDLock" deviceFilter="self.doorLock" uiPath="ID Lock 100/150 Specific">
 		<Name>Get Lock Mode (ID Lock 100/150 Only)</Name>
 		<CallbackMethod>getModeIDLock</CallbackMethod>
+	</Action>
+
+	<Action id="sep2" />
+
+	<Action id="sendCmdToRing" deviceFilter="self.doorLock" uiPath="Ring Keypad">
+		<Name>Send command to keypad</Name>
+		<CallbackMethod>sendCmdToRing</CallbackMethod>
+		<ConfigUI>
+			<Field id="cmdToSend" type="menu">
+				<Label>Command:</Label>
+				<List>
+					<Option value="01">Home Armed</Option>
+					<Option value="02">Away Armed</Option>
+					<Option value="03">Disarmed</Option>
+					<Option value="04">Siren On</Option>
+					<Option value="05">Sensor Bypass</Option>
+					<Option value="06">Heartbeat: AntiClockwise</Option>
+					<Option value="07">Heartbeat: Clockwise</Option>
+					<Option value="08">Chime</Option>
+				</List>
+			</Field>
+		</ConfigUI>
 	</Action>
 
 </Actions>

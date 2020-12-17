@@ -710,7 +710,7 @@
 	<Event id="space">
 	</Event>
 
-	<Event id="codeEntered">
+	<Event id="codeEntered" uiPath="Ring Keypad">
 		<Name>Keypad - Code entered</Name>
 		<ConfigUI>
 			<Field id="deviceAddress" type="menu">

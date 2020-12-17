@@ -347,6 +347,21 @@ class Plugin(indigo.PluginBase):
 
 		#indigo.server.log("Sending raw command: [" + convertListToStr(codeStr) + "] to device " + str(indigoDev))
 
+	def sendCmdToRing(self, pluginAction):
+		self.debugLog("sendCmdToRing action called")
+		indigoDev = pluginAction.deviceId
+		self.debugLog("Indigo keypad selected: " + str(indigoDev))
+
+		cmdToSend = str(pluginAction.props["cmdToSend"])
+
+		indigo.server.log("Setting operating mode to %s :" % cmdToSend)
+
+		codeStr = [135, 1, int(cmdToSend)]
+
+		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
+
+		#indigo.server.log("Sending raw command: [" + convertListToStr(codeStr) + "] to device " + str(indigoDev))
+
 
 ########################################
 	def zwaveCommandReceived(self, cmd):
