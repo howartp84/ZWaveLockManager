@@ -373,7 +373,7 @@ class Plugin(indigo.PluginBase):
 		bytes = byteListStr.split()
 		nodeId = int(bytes[5],16)
 
-		if (nodeId == 44): #Set to 44 for Study Fan Debugging
+		if (nodeId == 444): #Set to 44 for Study Fan Debugging
 			byteListStr = "01 10 00 04 00 2C 0A 6F 01 11 02 02 04 31 32 33 34 FF"
 			bytes = byteListStr.split()
 			#This forces code below in 6F 01 to execute
@@ -414,6 +414,7 @@ class Plugin(indigo.PluginBase):
 				else:
 					self.triggerEvent("lockedByCode",int(bytes[5],16),int(bytes[10],16))
 				self.updateState(int(bytes[5],16),"lockState","Locked")
+				self.updateState(int(bytes[5],16),"lastUser",int(bytes[10],16))
 			elif (bytes[9] == "13"):
 				indigo.server.log(u"Status: User %s unlocked door [Node: %s]" % (int(bytes[10],16), int(bytes[5],16)))
 				if (int(bytes[10],16) == 251):
@@ -421,6 +422,7 @@ class Plugin(indigo.PluginBase):
 				else:
 					self.triggerEvent("unlockedByCode",int(bytes[5],16),int(bytes[10],16))
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
+				self.updateState(int(bytes[5],16),"lastUser",int(bytes[10],16))
 			elif (bytes[9] == "15"):
 				if (bytes[10] == "01"):
 					indigo.server.log(u"Status: Door locked manually [Node: %s]" % (int(bytes[5],16)))
@@ -563,8 +565,20 @@ class Plugin(indigo.PluginBase):
 				elif (bytes[14] == "05"):
 					indigo.server.log(u"Status: Attempted tamper: invalid code entered %s [Node: %s]" % (int(bytes[16],16),int(bytes[5],16)))
 					self.triggerEvent("lockedByCode",int(bytes[5],16),int(bytes[16],16))
+				elif (bytes[14] == "06"):
+					indigo.server.log(u"Status: Glass break detected [Node: %s]" % (int(bytes[5],16)))
+				elif (bytes[14] == "07"):
+					indigo.server.log(u"Status: Motion detected [Node: %s]" % (int(bytes[5],16)))
+				elif (bytes[14] == "08"):
+					indigo.server.log(u"Status: Motion detected [Node: %s]" % (int(bytes[5],16)))
 				elif (bytes[14] == "09"):
 					indigo.server.log(u"Status: Tamper alert: lock motion detected [Node: %s]" % int(bytes[5],16))
+				elif (bytes[14] == "0A"):
+					indigo.server.log(u"Status: Impact detected [Node: %s]" % (int(bytes[5],16)))
+				elif (bytes[14] == "0B"):
+					indigo.server.log(u"Status: Magnetic field interference detected [Node: %s]" % (int(bytes[5],16)))
+				elif (bytes[14] == "0C"):
+					indigo.server.log(u"Status: RF Jamming detected [Node: %s]" % (int(bytes[5],16)))
 				elif (bytes[14] == "FE"):
 					indigo.server.log(u"Status: Unknown alarm event [Node: %s]" % int(bytes[5],16))
 
