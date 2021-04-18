@@ -284,7 +284,7 @@ class Plugin(indigo.PluginBase):
 
 		self.debugLog("Relock is: %s" % relockOn)
 
-		if relockOn == "On":
+		if relockOn == "on":
 			indigo.server.log("Enabling auto relock mode with a timeout of %s seconds:" % str(relockTime))
 			codeStr = [112, 04, 02, 01, 255]
 			indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
