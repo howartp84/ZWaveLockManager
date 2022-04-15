@@ -31,6 +31,7 @@ class Plugin(indigo.PluginBase):
 	def __init__(self, pluginId, pluginDisplayName, pluginVersion, pluginPrefs):
 		super(Plugin, self).__init__(pluginId, pluginDisplayName, pluginVersion, pluginPrefs)
 		self.debug = pluginPrefs.get("showDebugInfo", False)
+		self.version = pluginVersion
 
 		self.events = dict() # {} Need to define here any new Trigger types or the key throws undefined errors
 		self.events["unlockedByCode"] = dict() 	# {} Need to define here any new Trigger types or the key throws undefined errors
@@ -94,6 +95,7 @@ class Plugin(indigo.PluginBase):
 	########################################
 	def startup(self):
 		self.debugLog(u"startup called")
+		self.debugLog("Plugin version: {}".format(self.version))
 		indigo.zwave.subscribeToIncoming()
 
 	def shutdown(self):
@@ -222,7 +224,7 @@ class Plugin(indigo.PluginBase):
 		self.debugLog("Node: " + str(node))
 		indigo.server.log("Requesting Lock Mode")
 
-		codeStr = [112, 05, 1] #112 = 0x70 Configuration, 5 = 0x05 GET
+		codeStr = [112, 5, 1] #112 = 0x70 Configuration, 5 = 0x05 GET
 
 		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 
@@ -266,9 +268,9 @@ class Plugin(indigo.PluginBase):
 
 		self.debugLog(yearAgain)
 
-		codeStr = [139, 01, int(yearHi,2), int(yearLo,2), dmonth, dday, dhour, dmin, dsec]
+		codeStr = [139, 1, int(yearHi,2), int(yearLo,2), dmonth, dday, dhour, dmin, dsec]
 
-		indigo.server.log(u"Setting lock time to %s/%s/%s %s:%s:%s (UK format DD/MM/YYYY HH:MM:SS)" % (dday, dmonth, yearAgain, dhour, dmin, dsec))
+		indigo.server.log(u"Setting lock time to {}/{}/{} {}:{}:{} (UK format DD/MM/YYYY HH:MM:SS)".format(dday, dmonth, yearAgain, dhour, dmin, dsec))
 
 		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 
@@ -282,19 +284,19 @@ class Plugin(indigo.PluginBase):
 
 		#self.debugLog(str(pluginAction.props))
 
-		self.debugLog("Relock is: %s" % relockOn)
+		self.debugLog("Relock is: {}".format(relockOn))
 
 		if relockOn == "on":
-			indigo.server.log("Enabling auto relock mode with a timeout of %s seconds:" % str(relockTime))
-			codeStr = [112, 04, 02, 01, 255]
+			indigo.server.log("Enabling auto relock mode with a timeout of {} seconds:".format(str(relockTime)))
+			codeStr = [112, 4, 2, 1, 255]
 			indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 			#indigo.server.log("Sending raw command: [" + convertListToStr(codeStr) + "] to device " + str(indigoDev))
-			codeStr = [112, 04, 03, 01, int(relockTime)]
+			codeStr = [112, 4, 3, 1, int(relockTime)]
 			indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 			#indigo.server.log("Sending raw command: [" + convertListToStr(codeStr) + "] to device " + str(indigoDev))
 		else:
 			indigo.server.log("Disabling auto relock mode")
-			codeStr = [112, 04, 02, 01, 00]
+			codeStr = [112, 4, 2, 1, 0]
 			indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 			#indigo.server.log("Sending raw command: [" + convertListToStr(codeStr) + "] to device " + str(indigoDev))
 
@@ -306,12 +308,12 @@ class Plugin(indigo.PluginBase):
 		wrongCount = str(pluginAction.props["wrongCount"])
 		shutdownTime = str(pluginAction.props["shutdownTime"])
 
-		indigo.server.log("Setting incorrect code limit to %s attempts with %s second timeout:" % (str(wrongCount),str(shutdownTime)))
+		indigo.server.log("Setting incorrect code limit to {} attempts with {} second timeout:".format(str(wrongCount),str(shutdownTime)))
 
-		codeStr = [112, 04, 04, 01, int(wrongCount)]
+		codeStr = [112, 4, 4, 1, int(wrongCount)]
 		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 
-		codeStr = [112, 04, 07, 01, int(shutdownTime)]
+		codeStr = [112, 4, 7, 1, int(shutdownTime)]
 		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 
 
@@ -324,7 +326,7 @@ class Plugin(indigo.PluginBase):
 
 		modeVal = str(pluginAction.props["modeVal"])
 
-		indigo.server.log("Setting operating mode to %s :" % modeVal)
+		indigo.server.log("Setting operating mode to {} :".format(modeVal))
 
 		codeStr = [112, 4, 8, 1, int(modeVal)]
 
@@ -339,7 +341,7 @@ class Plugin(indigo.PluginBase):
 
 		modeVal = str(pluginAction.props["modeVal"])
 
-		indigo.server.log("Setting operating mode to %s :" % modeVal)
+		indigo.server.log("Setting operating mode to {} :".format(modeVal))
 
 		codeStr = [112, 4, 1, 1, int(modeVal)]
 
@@ -354,7 +356,7 @@ class Plugin(indigo.PluginBase):
 
 		cmdToSend = str(pluginAction.props["cmdToSend"])
 
-		indigo.server.log("Setting operating mode to %s :" % cmdToSend)
+		indigo.server.log("Setting operating mode to {} :".format(cmdToSend))
 
 		codeStr = [135, 1, int(cmdToSend)]
 
@@ -379,15 +381,15 @@ class Plugin(indigo.PluginBase):
 			#This forces code below in 6F 01 to execute
 
 		if (int(bytes[5],16)) not in self.lockIDs:
-			#self.debugLog(u"Node %s is not a lock or keypad - ignoring" % (int(bytes[5],16)))
+			#self.debugLog(u"Node {} is not a lock or keypad - ignoring".format(int(bytes[5],16)))
 			return
 		else:
-			self.debugLog(u"Node ID %s (Hex %s) found in lockIDs" % ((int(bytes[5],16)),(int(bytes[5],16))))
+			self.debugLog(u"Node ID {} (Hex {}) found in lockIDs".format((int(bytes[5],16)),(int(bytes[5],16))))
 
 		#bytes = byteListStr.split()
 
 		#if ((bytes[5] == "04") or (bytes[5] == "00")):			#Add node IDs here for debugging
-			#self.debugLog(u"Raw command: %s" % (byteListStr))
+			#self.debugLog(u"Raw command: {}".format(byteListStr))
 			#if (bytes[9] == "00"):
 				#self.updateState(int(bytes[5],16),"lockState","Open")
 			#else:
@@ -396,19 +398,19 @@ class Plugin(indigo.PluginBase):
 		if (bytes[7] == "71") and (bytes[8] == "05") and (bytes[9] != "00"): #COMMAND_CLASS_ALARM v1/v2 = Lock Status
 			#self.debugLog(u"-----")
 			#self.debugLog(u"Lock Status Report received:")
-			self.debugLog(u"Raw:  %s" % (byteListStr))
-			#self.debugLog(u"Node:  %s" % (int(bytes[5],16)))
-			#self.debugLog(u"Type:  %s" % (int(bytes[9],16)))
-			#self.debugLog(u"User:  %s" % (int(bytes[10],16)))
+			self.debugLog(u"Raw:  {}".format(byteListStr))
+			#self.debugLog(u"Node:  {}".format(int(bytes[5],16)))
+			#self.debugLog(u"Type:  {}".format(int(bytes[9],16)))
+			#self.debugLog(u"User:  {}".format(int(bytes[10],16)))
 			if (bytes[9] == "70"):
-				indigo.server.log(u"Status: User %s updated [Node: %s]" % (int(bytes[10],16), int(bytes[5],16)))
+				indigo.server.log(u"Status: User {} updated [Node: {}]".format(int(bytes[10],16), int(bytes[5],16)))
 			elif (bytes[9] == "71"):
-				indigo.server.log(u"Status: Updating user %s failed - PIN already exists [Node: %s]" % (int(bytes[10],16), int(bytes[5],16)))
+				indigo.server.log(u"Status: Updating user {} failed - PIN already exists [Node: {}]".format(int(bytes[10],16), int(bytes[5],16)))
 			elif (bytes[9] == "09"):
-				indigo.server.log(u"Status: Deadbolt jammed on door [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Deadbolt jammed on door [Node: {}]".format(int(bytes[5],16)))
 				self.triggerEvent("deadboltJammed",int(bytes[5],16),"")
 			elif (bytes[9] == "12"):
-				indigo.server.log(u"Status: User %s locked door [Node: %s]" % (int(bytes[10],16), int(bytes[5],16)))
+				indigo.server.log(u"Status: User {} locked door [Node: {}]".format(int(bytes[10],16), int(bytes[5],16)))
 				if (int(bytes[10],16) == 251):
 					self.triggerEvent("lockedByMasterCode",int(bytes[5],16),int(bytes[10],16))
 				else:
@@ -416,7 +418,7 @@ class Plugin(indigo.PluginBase):
 				self.updateState(int(bytes[5],16),"lockState","Locked")
 				self.updateState(int(bytes[5],16),"lastUser",int(bytes[10],16))
 			elif (bytes[9] == "13"):
-				indigo.server.log(u"Status: User %s unlocked door [Node: %s]" % (int(bytes[10],16), int(bytes[5],16)))
+				indigo.server.log(u"Status: User {} unlocked door [Node: {}]".format(int(bytes[10],16), int(bytes[5],16)))
 				if (int(bytes[10],16) == 251):
 					self.triggerEvent("unlockedByMasterCode",int(bytes[5],16),int(bytes[10],16))
 				else:
@@ -425,261 +427,261 @@ class Plugin(indigo.PluginBase):
 				self.updateState(int(bytes[5],16),"lastUser",int(bytes[10],16))
 			elif (bytes[9] == "15"):
 				if (bytes[10] == "01"):
-					indigo.server.log(u"Status: Door locked manually [Node: %s]" % (int(bytes[5],16)))
+					indigo.server.log(u"Status: Door locked manually [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("lockedManually",int(bytes[5],16),"")
 				elif (bytes[10] == "02"):
-					indigo.server.log(u"Status: Door locked manually (one-touch button) [Node: %s]" % (int(bytes[5],16)))
+					indigo.server.log(u"Status: Door locked manually (one-touch button) [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("lockedManuallyOneTouch",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Locked")
 			elif (bytes[9] == "16"):
-				indigo.server.log(u"Status: Door unlocked manually [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door unlocked manually [Node: {}]".format(int(bytes[5],16)))
 				self.triggerEvent("unlockedManually",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
 			elif (bytes[9] == "17"):
-				indigo.server.log(u"Status: Door locked but bolt not fully extended [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door locked but bolt not fully extended [Node: {}]".format(int(bytes[5],16)))
 				self.triggerEvent("deadboltJammed",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Jammed")
 			elif (bytes[9] == "18"):
-				indigo.server.log(u"Status: Door locked by Indigo [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door locked by Indigo [Node: {}]".format(int(bytes[5],16)))
 				self.triggerEvent("lockedByController",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Locked")
 			elif (bytes[9] == "19"):
-				indigo.server.log(u"Status: Door unlocked by Indigo [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door unlocked by Indigo [Node: {}]".format(int(bytes[5],16)))
 				self.triggerEvent("unlockedByController",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
 			elif (bytes[9] == "21"):
-				indigo.server.log(u"Status: User %s removed from door [Node: %s]" % (int(bytes[10],16), int(bytes[5],16)))
+				indigo.server.log(u"Status: User {} removed from door [Node: {}]".format(int(bytes[10],16), int(bytes[5],16)))
 			elif (bytes[9] == "A1"):
 				if (bytes[10] == "01"):
-					indigo.server.log(u"Status: Invalid code limit exceeded [Node: %s]" % (int(bytes[5],16)))
+					indigo.server.log(u"Status: Invalid code limit exceeded [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("invalidLimit",int(bytes[5],16),"")
 				elif (bytes[10] == "02"):
-					indigo.server.log(u"Status: Lock tamper alarm [Node: %s]" % (int(bytes[5],16)))
+					indigo.server.log(u"Status: Lock tamper alarm [Node: {}]".format(int(bytes[5],16)))
 			elif (bytes[9] == "1B"):
-				indigo.server.log(u"Status: Door re-locked automatically [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door re-locked automatically [Node: {}]".format(int(bytes[5],16)))
 				self.triggerEvent("relockedAuto",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Locked")
 			elif (bytes[9] == "A7"):
-				indigo.server.log(u"Status: Low Battery [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Low Battery [Node: {}]".format(int(bytes[5],16)))
 			elif (bytes[9] == "A8"):
-				indigo.server.log(u"Status: Critically Low Battery [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Critically Low Battery [Node: {}]".format(int(bytes[5],16)))
 			elif (bytes[9] == "A9"):
-				indigo.server.log(u"Status: Battery too low to operate [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Battery too low to operate [Node: {}]".format(int(bytes[5],16)))
 			elif (bytes[9] == "82"):
-				indigo.server.log(u"Status: Batteries replaced - please reset the internal clock [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Batteries replaced - please reset the internal clock [Node: {}]".format(int(bytes[5],16)))
 			else:
-				indigo.server.log(u"Unknown lock status received: %s [Node: %s]" % (int(bytes[9],16), int(bytes[5],16)))
+				indigo.server.log(u"Unknown lock status received: {} [Node: {}]".format(int(bytes[9],16), int(bytes[5],16)))
 			self.debugLog(u"-----")
 
 		if (bytes[7] == "71") and (bytes[8] == "05") and (bytes[9] == "00"): #COMMAND_CLASS_NOTIFICATION (aka ALARM) v3 = Lock Status
 			self.debugLog(u"-----")
 			self.debugLog(u"Lock Status Report received:")
-			self.debugLog(u"Raw:   %s" % (byteListStr))
-			self.debugLog(u"Node:  %s" % (int(bytes[5],16)))
-			self.debugLog(u"Type:  %s" % (int(bytes[13],16)))
-			self.debugLog(u"Event: %s" % (int(bytes[14],16)))
-			#self.debugLog(u"User:  %s" % (int(bytes[16],16)))	#Don't uncomment this line as byte 16 rarely exists
+			self.debugLog(u"Raw:   {}".format(byteListStr))
+			self.debugLog(u"Node:  {}".format(int(bytes[5],16)))
+			self.debugLog(u"Type:  {}".format(int(bytes[13],16)))
+			self.debugLog(u"Event: {}".format(int(bytes[14],16)))
+			#self.debugLog(u"User:  {}".format(int(bytes[16],16)))	#Don't uncomment this line as byte 16 rarely exists
 			if (bytes[13] == "06"): #Access Control
 				if (bytes[14] == "01"):
-					indigo.server.log(u"Status: Door locked manually [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door locked manually [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("lockedManually",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Locked")
 				elif (bytes[14] == "02"):
-					indigo.server.log(u"Status: Door unlocked manually [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door unlocked manually [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("unlockedManually",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
 				elif (bytes[14] == "03"):
-					indigo.server.log(u"Status: Door locked by RF [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door locked by RF [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("lockedByRF",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Locked")
 				elif (bytes[14] == "04"):
-					indigo.server.log(u"Status: Door unlocked by RF [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door unlocked by RF [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("unlockedByRF",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
 				elif (bytes[14] == "05"):
-					indigo.server.log(u"Status: Door locked by user %s [Node: %s]" % (int(bytes[16],16),int(bytes[5],16)))
+					indigo.server.log(u"Status: Door locked by user {} [Node: {}]".format(int(bytes[16],16),int(bytes[5],16)))
 					self.triggerEvent("lockedByCode",int(bytes[5],16),int(bytes[16],16))
 					self.updateState(int(bytes[5],16),"lockState","Locked")
 				elif (bytes[14] == "06"):
-					indigo.server.log(u"Status: Door unlocked by user %s [Node: %s]" % (int(bytes[16],16),int(bytes[5],16)))
+					indigo.server.log(u"Status: Door unlocked by user {} [Node: {}]".format(int(bytes[16],16),int(bytes[5],16)))
 					self.triggerEvent("unlockedByCode",int(bytes[5],16),int(bytes[16],16))
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
 				elif (bytes[14] == "07"):
-					indigo.server.log(u"Status: Door failed to lock manually [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door failed to lock manually [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("lockManuallyFailed",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
 				elif (bytes[14] == "08"):
-					indigo.server.log(u"Status: Door failed to lock by RF [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door failed to lock by RF [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("lockRFFailed",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
 				elif (bytes[14] == "09"):
-					indigo.server.log(u"Status: Door re-locked automatically [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door re-locked automatically [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("relockedAuto",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Locked")
 				elif (bytes[14] == "0A"):
-					indigo.server.log(u"Status: Door failed to relock automatically [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door failed to relock automatically [Node: {}]".format(int(bytes[5],16)))
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
 				elif (bytes[14] == "0B"):
-					indigo.server.log(u"Status: Door lock jammed [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door lock jammed [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("deadboltJammed",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Jammed")
 				elif (bytes[14] == "0C"):
-					indigo.server.log(u"Status: All codes deleted [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: All codes deleted [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "0D"):
-					indigo.server.log(u"Status: User code deleted [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: User code deleted [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "0E"):
-					indigo.server.log(u"Status: New user code added [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: New user code added [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "0F"):
-					indigo.server.log(u"Status: Updating user failed - PIN already exists [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Updating user failed - PIN already exists [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "10"):
-					indigo.server.log(u"Status: Keypad temporarily disabled [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Keypad temporarily disabled [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "11"):
-					indigo.server.log(u"Status: Keypad in use [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Keypad in use [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "12"):
-					indigo.server.log(u"Status: Master Code updated [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Master Code updated [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "13"):
-					indigo.server.log(u"Status: Invalid code limit exceeded [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Invalid code limit exceeded [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("invalidLimit",int(bytes[5],16),"")
 				elif (bytes[14] == "14"):
-					indigo.server.log(u"Status: Invalid user code entered when unlocking door [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Invalid user code entered when unlocking door [Node: {}]".format(int(bytes[5],16)))
 					self.triggerInvalidCode(int(bytes[5],16),"")
 				elif (bytes[14] == "15"):
-					indigo.server.log(u"Status: Invalid user code entered when locking door [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Invalid user code entered when locking door [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "16"):
-					indigo.server.log(u"Status: Door is open [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door is open [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("doorOpened",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Open")
 				elif (bytes[14] == "17"):
-					indigo.server.log(u"Status: Door is closed [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Door is closed [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("doorClosed",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Closed")
 			elif (bytes[13] == "07"): #Home Security
 				if (bytes[14] == "01"):
-					indigo.server.log(u"Status: Previous alarm/event cleared [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Previous alarm/event cleared [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "02"):
-					indigo.server.log(u"Status: Intrusion alert [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Intrusion alert [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "03"):
-					indigo.server.log(u"Status: Intrusion alert [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Intrusion alert [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "04"):
-					indigo.server.log(u"Status: Lock tamper switch activated [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Lock tamper switch activated [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "05"):
-					indigo.server.log(u"Status: Attempted tamper: invalid code entered %s [Node: %s]" % (int(bytes[16],16),int(bytes[5],16)))
+					indigo.server.log(u"Status: Attempted tamper: invalid code entered {} [Node: {}]".format(int(bytes[16],16),int(bytes[5],16)))
 					self.triggerEvent("lockedByCode",int(bytes[5],16),int(bytes[16],16))
 				elif (bytes[14] == "06"):
-					indigo.server.log(u"Status: Glass break detected [Node: %s]" % (int(bytes[5],16)))
+					indigo.server.log(u"Status: Glass break detected [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "07"):
-					indigo.server.log(u"Status: Motion detected [Node: %s]" % (int(bytes[5],16)))
+					indigo.server.log(u"Status: Motion detected [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "08"):
-					indigo.server.log(u"Status: Motion detected [Node: %s]" % (int(bytes[5],16)))
+					indigo.server.log(u"Status: Motion detected [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "09"):
-					indigo.server.log(u"Status: Tamper alert: lock motion detected [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Tamper alert: lock motion detected [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "0A"):
-					indigo.server.log(u"Status: Impact detected [Node: %s]" % (int(bytes[5],16)))
+					indigo.server.log(u"Status: Impact detected [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "0B"):
-					indigo.server.log(u"Status: Magnetic field interference detected [Node: %s]" % (int(bytes[5],16)))
+					indigo.server.log(u"Status: Magnetic field interference detected [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "0C"):
-					indigo.server.log(u"Status: RF Jamming detected [Node: %s]" % (int(bytes[5],16)))
+					indigo.server.log(u"Status: RF Jamming detected [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "FE"):
-					indigo.server.log(u"Status: Unknown alarm event [Node: %s]" % int(bytes[5],16))
+					indigo.server.log(u"Status: Unknown alarm event [Node: {}]".format(int(bytes[5],16)))
 
 		if (bytes[7] == "63") and (bytes[8] == "03"): #COMMAND_CLASS_USER_CODE = User Code status
 			self.debugLog(u"-----")
 			self.debugLog(u"User Code Status received:")
-			self.debugLog(u"Raw command: %s" % (byteListStr))
-			self.debugLog(u"Node:  %s" % (int(bytes[5],16)))
-			self.debugLog(u"User:  %s" % (int(bytes[9],16)))
+			self.debugLog(u"Raw command: {}".format(byteListStr))
+			self.debugLog(u"Node:  {}".format(int(bytes[5],16)))
+			self.debugLog(u"User:  {}".format(int(bytes[9],16)))
 			if (bytes[10] == "01"): #Code is set/slot is occupied
 				if len(bytes) < 22: # Code with characters
 					retCode = ' '.join([chr(int(bytex, 16)) for bytex in bytes[11:len(bytes)-1]])
 				else: # Pin or RFID tag
 					retCode = ' '.join(bytes[11:len(bytes)-1])
-				indigo.server.log(u"Status:  User code %s is %s [Node: %s]" % (int(bytes[9],16), retCode, int(bytes[5],16)))
+				indigo.server.log(u"Status:  User code {} is {} [Node: {}]".format(int(bytes[9],16), retCode, int(bytes[5],16)))
 			else:
-				indigo.server.log(u"Status:  User code %s is blank [Node: %s]" % (int(bytes[9],16),int(bytes[5],16)))
+				indigo.server.log(u"Status:  User code {} is blank [Node: {}]".format(int(bytes[9],16),int(bytes[5],16)))
 			self.debugLog(u"-----")
 
 		if (bytes[7] == "62") and (bytes[8] == "03"): #COMMAND_CLASS_DOOR = Door Lock Status
 			#self.debugLog(u"-----")
 			#self.debugLog(u"Lock Status Report received:")
-			self.debugLog(u"Door: %s" % (byteListStr))
+			self.debugLog(u"Door: {}".format(byteListStr))
 			self.debugLog("")
-			self.debugLog(u"Node:  %s" % (int(bytes[5],16)))
-			self.debugLog(u"Type:  %s" % (int(bytes[9],16)))
-			self.debugLog(u"User:  %s" % (int(bytes[10],16)))
+			self.debugLog(u"Node:  {}".format(int(bytes[5],16)))
+			self.debugLog(u"Type:  {}".format(int(bytes[9],16)))
+			self.debugLog(u"User:  {}".format(int(bytes[10],16)))
 			if (bytes[9] == "00"):
-				indigo.server.log(u"Status: Door is unlocked [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door is unlocked [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
 			elif (bytes[9] == "01"):
-				indigo.server.log(u"Status: Door is unlocked: auto relock active [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door is unlocked: auto relock active [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
 			elif (bytes[9] == "10"):
-				indigo.server.log(u"Status: Door is unlocked on the inside [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door is unlocked on the inside [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
 			elif (bytes[9] == "11"):
-				indigo.server.log(u"Status: Door is unlocked on the inside: auto relock active [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door is unlocked on the inside: auto relock active [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
 			elif (bytes[9] == "20"):
-				indigo.server.log(u"Status: Door is unlocked on the outside [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door is unlocked on the outside [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
 			elif (bytes[9] == "21"):
-				indigo.server.log(u"Status: Door is unlocked on the outside: auto relock active [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door is unlocked on the outside: auto relock active [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
 			elif (bytes[9] == "FE"):
-				indigo.server.log(u"Status: Door lock state unknown [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door lock state unknown [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"lockState","Unknown")
 			elif (bytes[9] == "FF"):
-				indigo.server.log(u"Status: Door is locked [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door is locked [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"lockState","Locked")
 			if (bytes[11] == "00"): #Latch, Bold, Door status by binary bitmask
-				indigo.server.log(u"Latch open, Bolt locked, Door open [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Latch open, Bolt locked, Door open [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"handleState","Open")
 			elif (bytes[11] == "01"):
-				indigo.server.log(u"Latch open, Bolt locked, Door closed [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Latch open, Bolt locked, Door closed [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"handleState","Closed")
 			elif (bytes[11] == "02"):
-				indigo.server.log(u"Latch open, Bolt unlocked, Door open [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Latch open, Bolt unlocked, Door open [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"handleState","Open")
 			elif (bytes[11] == "03"):
-				indigo.server.log(u"Latch open, Bolt unlocked, Door closed [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Latch open, Bolt unlocked, Door closed [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"handleState","Closed")
 			elif (bytes[11] == "04"):
-				indigo.server.log(u"Latch closed, Bolt locked, Door open [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Latch closed, Bolt locked, Door open [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"handleState","Open")
 			elif (bytes[11] == "05"):
-				indigo.server.log(u"Latch closed, Bolt locked, Door closed [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Latch closed, Bolt locked, Door closed [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"handleState","Closed")
 			elif (bytes[11] == "06"):
-				indigo.server.log(u"Latch closed, Bolt unlocked, Door open [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Latch closed, Bolt unlocked, Door open [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"handleState","Open")
 			elif (bytes[11] == "07"):
-				indigo.server.log(u"Latch closed, Bolt unlocked, Door closed [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Latch closed, Bolt unlocked, Door closed [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"handleState","Closed")
 
 		if (bytes[7] == "70") and (bytes[9] == "01"): #COMMAND_CLASS_CONFIGURATION (Param 1) = Door Lock Mode (eg Away)
 			#self.debugLog(u"-----")
 			#self.debugLog(u"Door Mode Report received:")
-			self.debugLog(u"Door Mode: %s" % (byteListStr))
+			self.debugLog(u"Door Mode: {}".format(byteListStr))
 			self.debugLog("")
-			self.debugLog(u"Node:  %s" % (int(bytes[5],16)))
-			self.debugLog(u"Mode:  %s" % (int(bytes[11],16)))
+			self.debugLog(u"Node:  {}".format(int(bytes[5],16)))
+			self.debugLog(u"Mode:  {}".format(int(bytes[11],16)))
 			if (bytes[11] == "00"):
-				indigo.server.log(u"Status: Door Mode is Home-ManualLock [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door Mode is Home-ManualLock [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"doorMode","Home-Manual")
 			elif (bytes[11] == "01"):
-				indigo.server.log(u"Status: Door Mode is Home-AutoLock [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door Mode is Home-AutoLock [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"doorMode","Home-Manual")
 			elif (bytes[11] == "02"):
-				indigo.server.log(u"Status: Door Mode is Away-ManualLock [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door Mode is Away-ManualLock [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"doorMode","Home-Manual")
 			elif (bytes[11] == "03"):
-				indigo.server.log(u"Status: Door Mode is Away-Autolock [Node: %s]" % (int(bytes[5],16)))
+				indigo.server.log(u"Status: Door Mode is Away-Autolock [Node: {}]".format(int(bytes[5],16)))
 				self.updateState(int(bytes[5],16),"doorMode","Home-Manual")
 
 		if (bytes[7] == "6F") and (bytes[8] == "01"): #COMMAND_CLASS_ENTRY_CONTROL = Keypad entry
 			self.debugLog(u"-----")
 			self.debugLog(u"Keypad entry code received:")
-			self.debugLog(u"Raw command: %s" % (byteListStr))
-			self.debugLog(u"Node:  %s" % (int(bytes[5],16)))
+			self.debugLog(u"Raw command: {}".format(byteListStr))
+			self.debugLog(u"Node:  {}".format(int(bytes[5],16)))
 			if (bytes[10] == "02"): #01 = RAW, 02 = ASCII, 03 = MD5
 				eventKey = bytes[11] #Enter, Arm, Disarm, etc
 				codeVal = ''
@@ -718,7 +720,7 @@ class Plugin(indigo.PluginBase):
 		self.zwaveCommandReceived(cmd)
 		cmd = {'bytes': [0x01,0x0A,0x00,0x04,0x00,0x2C,0x04,0x71,0x05,0x14,0x01,0xFF], 'nodeId': None, 'endpoint': None}
 		self.zwaveCommandReceived(cmd)
-		self.debugLog(u"lockIDs: %s" % (str(self.lockIDs)))
+		self.debugLog(u"lockIDs: {}".format(str(self.lockIDs)))
 
 
 ########################################
@@ -757,16 +759,16 @@ class Plugin(indigo.PluginBase):
 			dAddress = self.events[eventType][trigger].pluginProps["deviceAddress"]
 			#dNodeID = indigo.devices[int(dAddress)].ownerProps['address']
 			dNodeID = self.nodeFromDev[int(dAddress)]
-			if (userNo <> ""):
+			if (userNo != ""):
 				dUserNo = self.events[eventType][trigger].pluginProps["userNo"]
 			else:
 				dUserNo = "" #We pass in "" as userNo if the trigger doesn't require a userNo match.
 				#						 #We then match "" to "" below.
 			self.debugLog(u"---")
-			self.debugLog(u"dNodeID:   #%s#" % (dNodeID))
-			self.debugLog(u"eventNode: #%s#" % (eventNode))
-			self.debugLog(u"dUserNo:   #%s#" % (str(dUserNo)))
-			self.debugLog(u"userNo:    #%s#" % (str(userNo)))
+			self.debugLog(u"dNodeID:   #{}#".format(dNodeID))
+			self.debugLog(u"eventNode: #{}#".format(eventNode))
+			self.debugLog(u"dUserNo:   #{}#".format(str(dUserNo)))
+			self.debugLog(u"userNo:    #{}#".format(str(userNo)))
 			if (str(eventNode) == str(dNodeID)):
 				if ((str(dUserNo) == "Any") or (str(dUserNo) == str(userNo))):
 					indigo.trigger.execute(trigger)
@@ -784,10 +786,10 @@ class Plugin(indigo.PluginBase):
 			dNodeID = self.nodeFromDev[int(dAddress)]
 			dCode = self.events[eventType][trigger].pluginProps["invalidCode"]
 			self.debugLog(u"---")
-			self.debugLog(u"dNodeID:   #%s#" % (dNodeID))
-			self.debugLog(u"eventNode: #%s#" % (eventNode))
-			self.debugLog(u"dCode:   #%s#" % (str(dCode)))
-			self.debugLog(u"inCode:    #%s#" % (str(inCode)))
+			self.debugLog(u"dNodeID:   #{}#".format(dNodeID))
+			self.debugLog(u"eventNode: #{}#".format(eventNode))
+			self.debugLog(u"dCode:   #{}#".format(str(dCode)))
+			self.debugLog(u"inCode:    #{}#".format(str(inCode)))
 			if (str(eventNode) == str(dNodeID)):
 				if ((str(dCodeNo) == "") or (str(dCode) == str(inCode))):
 					indigo.trigger.execute(trigger)
@@ -807,12 +809,12 @@ class Plugin(indigo.PluginBase):
 			dCode = self.events["codeEntered"][trigger].pluginProps["code"]
 			dKey = self.events["codeEntered"][trigger].pluginProps["eventKey"]
 			#self.debugLog(u"---")
-			#self.debugLog(u"dNodeID:   #%s#" % (dNodeID))
-			#self.debugLog(u"eventNode: #%s#" % (eventNode))
-			#self.debugLog(u"dCode:   #%s#" % (str(dCode)))
-			#self.debugLog(u"inCode:   #%s#" % (str(inCode)))
-			#self.debugLog(u"dKey:    #%s#" % (str(dKey)))
-			#self.debugLog(u"inKey:    #%s#" % (str(inKey)))
+			#self.debugLog(u"dNodeID:   #{}#".format(dNodeID))
+			#self.debugLog(u"eventNode: #{}#".format(eventNode))
+			#self.debugLog(u"dCode:   #{}#".format(str(dCode)))
+			#self.debugLog(u"inCode:   #{}#".format(str(inCode)))
+			#self.debugLog(u"dKey:    #{}#".format(str(dKey)))
+			#self.debugLog(u"inKey:    #{}#".format(str(inKey)))
 			if (str(eventNode) == str(dNodeID)):
 				if ((str(inCode) == str(dCode)) and (str(inKey) == str(dKey))):
 					indigo.trigger.execute(trigger)
@@ -823,7 +825,7 @@ class Plugin(indigo.PluginBase):
 		self.debugLog("Node: " + str(node))
 		indigo.server.log("Setting PIN for user " + str(userNo) + " to: " + str(userPin))
 
-		codeStr = [99, 01, int(userNo), 01] + self.getPinStr(userPin)
+		codeStr = [99, 1, int(userNo), 1] + self.getPinStr(userPin)
 
 		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 
@@ -832,7 +834,7 @@ class Plugin(indigo.PluginBase):
 		self.debugLog("Node: " + str(node))
 		indigo.server.log("Clearing PIN for user " + userNo)
 
-		codeStr = [99, 01, int(userNo), 00]
+		codeStr = [99, 1, int(userNo), 0]
 
 		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 
@@ -842,13 +844,13 @@ class Plugin(indigo.PluginBase):
 		self.debugLog("Node: " + str(node))
 		indigo.server.log("Requesting PIN for user " + userNo)
 
-		codeStr = [99, 02, int(userNo)]
+		codeStr = [99, 2, int(userNo)]
 
 		indigo.zwave.sendRaw(device=indigo.devices[self.zedFromDev[indigoDev]],cmdBytes=codeStr,sendMode=1)
 
 
 	def updateState(self, nodeID, state, newState):
-		self.debugLog(u"Updating state: " + unicode(state))
+		self.debugLog("Updating state: {}".format(state))
 		dev=indigo.devices[self.devFromNode[nodeID]]
 		dev.updateStateOnServer(state, newState)
 
