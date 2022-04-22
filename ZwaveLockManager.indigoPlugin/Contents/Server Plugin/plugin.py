@@ -411,44 +411,44 @@ class Plugin(indigo.PluginBase):
 				self.triggerEvent("deadboltJammed",int(bytes[5],16),"")
 			elif (bytes[9] == "12"):
 				indigo.server.log(u"Status: User {} locked door [Node: {}]".format(int(bytes[10],16), int(bytes[5],16)))
+				self.updateState(int(bytes[5],16),"lockState","Locked")
+				self.updateState(int(bytes[5],16),"lastUser",int(bytes[10],16))
 				if (int(bytes[10],16) == 251):
 					self.triggerEvent("lockedByMasterCode",int(bytes[5],16),int(bytes[10],16))
 				else:
 					self.triggerEvent("lockedByCode",int(bytes[5],16),int(bytes[10],16))
-				self.updateState(int(bytes[5],16),"lockState","Locked")
-				self.updateState(int(bytes[5],16),"lastUser",int(bytes[10],16))
 			elif (bytes[9] == "13"):
 				indigo.server.log(u"Status: User {} unlocked door [Node: {}]".format(int(bytes[10],16), int(bytes[5],16)))
+				self.updateState(int(bytes[5],16),"lockState","Unlocked")
+				self.updateState(int(bytes[5],16),"lastUser",int(bytes[10],16))
 				if (int(bytes[10],16) == 251):
 					self.triggerEvent("unlockedByMasterCode",int(bytes[5],16),int(bytes[10],16))
 				else:
 					self.triggerEvent("unlockedByCode",int(bytes[5],16),int(bytes[10],16))
-				self.updateState(int(bytes[5],16),"lockState","Unlocked")
-				self.updateState(int(bytes[5],16),"lastUser",int(bytes[10],16))
 			elif (bytes[9] == "15"):
+				self.updateState(int(bytes[5],16),"lockState","Locked")
 				if (bytes[10] == "01"):
 					indigo.server.log(u"Status: Door locked manually [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("lockedManually",int(bytes[5],16),"")
 				elif (bytes[10] == "02"):
 					indigo.server.log(u"Status: Door locked manually (one-touch button) [Node: {}]".format(int(bytes[5],16)))
 					self.triggerEvent("lockedManuallyOneTouch",int(bytes[5],16),"")
-				self.updateState(int(bytes[5],16),"lockState","Locked")
 			elif (bytes[9] == "16"):
 				indigo.server.log(u"Status: Door unlocked manually [Node: {}]".format(int(bytes[5],16)))
-				self.triggerEvent("unlockedManually",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
+				self.triggerEvent("unlockedManually",int(bytes[5],16),"")
 			elif (bytes[9] == "17"):
 				indigo.server.log(u"Status: Door locked but bolt not fully extended [Node: {}]".format(int(bytes[5],16)))
-				self.triggerEvent("deadboltJammed",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Jammed")
+				self.triggerEvent("deadboltJammed",int(bytes[5],16),"")
 			elif (bytes[9] == "18"):
 				indigo.server.log(u"Status: Door locked by Indigo [Node: {}]".format(int(bytes[5],16)))
-				self.triggerEvent("lockedByController",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Locked")
+				self.triggerEvent("lockedByController",int(bytes[5],16),"")
 			elif (bytes[9] == "19"):
 				indigo.server.log(u"Status: Door unlocked by Indigo [Node: {}]".format(int(bytes[5],16)))
-				self.triggerEvent("unlockedByController",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Unlocked")
+				self.triggerEvent("unlockedByController",int(bytes[5],16),"")
 			elif (bytes[9] == "21"):
 				indigo.server.log(u"Status: User {} removed from door [Node: {}]".format(int(bytes[10],16), int(bytes[5],16)))
 			elif (bytes[9] == "A1"):
@@ -459,8 +459,8 @@ class Plugin(indigo.PluginBase):
 					indigo.server.log(u"Status: Lock tamper alarm [Node: {}]".format(int(bytes[5],16)))
 			elif (bytes[9] == "1B"):
 				indigo.server.log(u"Status: Door re-locked automatically [Node: {}]".format(int(bytes[5],16)))
-				self.triggerEvent("relockedAuto",int(bytes[5],16),"")
 				self.updateState(int(bytes[5],16),"lockState","Locked")
+				self.triggerEvent("relockedAuto",int(bytes[5],16),"")
 			elif (bytes[9] == "A7"):
 				indigo.server.log(u"Status: Low Battery [Node: {}]".format(int(bytes[5],16)))
 			elif (bytes[9] == "A8"):
@@ -484,47 +484,47 @@ class Plugin(indigo.PluginBase):
 			if (bytes[13] == "06"): #Access Control
 				if (bytes[14] == "01"):
 					indigo.server.log(u"Status: Door locked manually [Node: {}]".format(int(bytes[5],16)))
-					self.triggerEvent("lockedManually",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Locked")
+					self.triggerEvent("lockedManually",int(bytes[5],16),"")
 				elif (bytes[14] == "02"):
 					indigo.server.log(u"Status: Door unlocked manually [Node: {}]".format(int(bytes[5],16)))
-					self.triggerEvent("unlockedManually",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
+					self.triggerEvent("unlockedManually",int(bytes[5],16),"")
 				elif (bytes[14] == "03"):
 					indigo.server.log(u"Status: Door locked by RF [Node: {}]".format(int(bytes[5],16)))
-					self.triggerEvent("lockedByRF",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Locked")
+					self.triggerEvent("lockedByRF",int(bytes[5],16),"")
 				elif (bytes[14] == "04"):
 					indigo.server.log(u"Status: Door unlocked by RF [Node: {}]".format(int(bytes[5],16)))
-					self.triggerEvent("unlockedByRF",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
+					self.triggerEvent("unlockedByRF",int(bytes[5],16),"")
 				elif (bytes[14] == "05"):
 					indigo.server.log(u"Status: Door locked by user {} [Node: {}]".format(int(bytes[16],16),int(bytes[5],16)))
-					self.triggerEvent("lockedByCode",int(bytes[5],16),int(bytes[16],16))
 					self.updateState(int(bytes[5],16),"lockState","Locked")
+					self.triggerEvent("lockedByCode",int(bytes[5],16),int(bytes[16],16))
 				elif (bytes[14] == "06"):
 					indigo.server.log(u"Status: Door unlocked by user {} [Node: {}]".format(int(bytes[16],16),int(bytes[5],16)))
-					self.triggerEvent("unlockedByCode",int(bytes[5],16),int(bytes[16],16))
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
+					self.triggerEvent("unlockedByCode",int(bytes[5],16),int(bytes[16],16))
 				elif (bytes[14] == "07"):
 					indigo.server.log(u"Status: Door failed to lock manually [Node: {}]".format(int(bytes[5],16)))
-					self.triggerEvent("lockManuallyFailed",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
+					self.triggerEvent("lockManuallyFailed",int(bytes[5],16),"")
 				elif (bytes[14] == "08"):
 					indigo.server.log(u"Status: Door failed to lock by RF [Node: {}]".format(int(bytes[5],16)))
-					self.triggerEvent("lockRFFailed",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
+					self.triggerEvent("lockRFFailed",int(bytes[5],16),"")
 				elif (bytes[14] == "09"):
 					indigo.server.log(u"Status: Door re-locked automatically [Node: {}]".format(int(bytes[5],16)))
-					self.triggerEvent("relockedAuto",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Locked")
+					self.triggerEvent("relockedAuto",int(bytes[5],16),"")
 				elif (bytes[14] == "0A"):
 					indigo.server.log(u"Status: Door failed to relock automatically [Node: {}]".format(int(bytes[5],16)))
 					self.updateState(int(bytes[5],16),"lockState","Unlocked")
 				elif (bytes[14] == "0B"):
 					indigo.server.log(u"Status: Door lock jammed [Node: {}]".format(int(bytes[5],16)))
-					self.triggerEvent("deadboltJammed",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Jammed")
+					self.triggerEvent("deadboltJammed",int(bytes[5],16),"")
 				elif (bytes[14] == "0C"):
 					indigo.server.log(u"Status: All codes deleted [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "0D"):
@@ -549,12 +549,12 @@ class Plugin(indigo.PluginBase):
 					indigo.server.log(u"Status: Invalid user code entered when locking door [Node: {}]".format(int(bytes[5],16)))
 				elif (bytes[14] == "16"):
 					indigo.server.log(u"Status: Door is open [Node: {}]".format(int(bytes[5],16)))
-					self.triggerEvent("doorOpened",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Open")
+					self.triggerEvent("doorOpened",int(bytes[5],16),"")
 				elif (bytes[14] == "17"):
 					indigo.server.log(u"Status: Door is closed [Node: {}]".format(int(bytes[5],16)))
-					self.triggerEvent("doorClosed",int(bytes[5],16),"")
 					self.updateState(int(bytes[5],16),"lockState","Closed")
+					self.triggerEvent("doorClosed",int(bytes[5],16),"")
 			elif (bytes[13] == "07"): #Home Security
 				if (bytes[14] == "01"):
 					indigo.server.log(u"Status: Previous alarm/event cleared [Node: {}]".format(int(bytes[5],16)))

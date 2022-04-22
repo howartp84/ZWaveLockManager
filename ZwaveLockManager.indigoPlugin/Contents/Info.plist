@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PluginVersion</key>
-	<string>3.0.63</string>
+	<string>3.0.64</string>
 	<key>ServerApiVersion</key>
 	<string>3.0</string>
 	<key>IwsApiVersion</key>
 	<string>1.0.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>Z-Wave Lock/Code Manager</string>
+	<string>Z-Wave Lock Manager</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.howartp.lockmanager</string>
 	<key>CFBundleVersion</key>
