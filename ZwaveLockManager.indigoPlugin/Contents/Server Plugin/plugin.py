@@ -233,7 +233,7 @@ class Plugin(indigo.PluginBase):
 		if len(inPin) in [4,5,6,7,8]:
 			return [int(ord(inPin[i:i+1])) for i in range(0,len(inPin))]		#xrange in py2 is now range in py3
 		elif len(inPin) == 29:
-			return [int(inPin[i:i+2],16) for i in range(0,len(inPin),3)]		range in py2 is now list(range()) in py3
+			return [int(inPin[i:i+2],16) for i in range(0,len(inPin),3)]		#range in py2 is now list(range()) in py3
 		else:
 			return []
 
