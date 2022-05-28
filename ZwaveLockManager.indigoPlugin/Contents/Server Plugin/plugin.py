@@ -231,9 +231,9 @@ class Plugin(indigo.PluginBase):
 
 	def getPinStr(self,inPin):
 		if len(inPin) in [4,5,6,7,8]:
-			return [int(ord(inPin[i:i+1])) for i in xrange(0,len(inPin))]
+			return [int(ord(inPin[i:i+1])) for i in range(0,len(inPin))]		#xrange in py2 is now range in py3
 		elif len(inPin) == 29:
-			return [int(inPin[i:i+2],16) for i in xrange(0,len(inPin),3)]
+			return [int(inPin[i:i+2],16) for i in range(0,len(inPin),3)]		range in py2 is now list(range()) in py3
 		else:
 			return []
 
@@ -725,7 +725,7 @@ class Plugin(indigo.PluginBase):
 
 ########################################
 	def triggerStartProcessing(self, trigger):
-		self.debugLog(u"Start processing trigger " + unicode(trigger.name))
+		self.debugLog(u"Start processing trigger " + trigger.name)
 		#self.debugLog(u"-----")
 		self.events[str(trigger.pluginTypeId)][trigger.id] = trigger
 		#self.debugLog(u"Trigger ID:     " + str(trigger.id))
@@ -742,7 +742,7 @@ class Plugin(indigo.PluginBase):
 		#self.debugLog(u"")
 
 	def triggerStopProcessing(self, trigger):
-		self.debugLog(u"Stop processing trigger " + unicode(trigger.name))
+		self.debugLog(u"Stop processing trigger " + trigger.name)
 		if trigger.pluginTypeId in self.events:
 			if trigger.id in self.events[trigger.pluginTypeId]:
 				del self.events[trigger.pluginTypeId][trigger.id]
