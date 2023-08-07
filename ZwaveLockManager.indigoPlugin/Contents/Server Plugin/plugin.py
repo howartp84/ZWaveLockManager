@@ -423,6 +423,7 @@ class Plugin(indigo.PluginBase):
 				self.updateState(int(bytes[5],16),"lastUser",int(bytes[10],16))
 				if (int(bytes[10],16) == 251):
 					self.triggerEvent("unlockedByMasterCode",int(bytes[5],16),int(bytes[10],16))
+					self.triggerEvent("unlockedByCodeIncMaster",int(bytes[5],16),int(bytes[10],16))
 				else:
 					self.triggerEvent("unlockedByCode",int(bytes[5],16),int(bytes[10],16))
 			elif (bytes[9] == "15"):
@@ -770,7 +771,7 @@ class Plugin(indigo.PluginBase):
 			self.debugLog(u"dUserNo:   #{}#".format(str(dUserNo)))
 			self.debugLog(u"userNo:    #{}#".format(str(userNo)))
 			if (str(eventNode) == str(dNodeID)):
-				if ((str(dUserNo) == "Any") or (str(dUserNo) == str(userNo))):
+				if ((str(dUserNo) == "Any") or (str(dUserNo) == str(userNo)) or ((str(dUserNo) == "AnyIncMaster") and (str(userNo) == "251"))):
 					indigo.trigger.execute(trigger)
 					self.debugLog(u"Executing trigger")
 

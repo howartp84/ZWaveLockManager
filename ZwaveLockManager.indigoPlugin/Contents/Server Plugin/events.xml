@@ -9,7 +9,8 @@
 			</Field>
 			<Field id="userNo" type="menu" defaultValue="Any">
 				<List>
-					<Option value="Any">Any User</Option>
+					<Option value="Any">Any User (except Master)</Option>
+					<Option value="AnyIncMaster">Any User (including Master)</Option>
 					<Option value="1">1</Option>
 					<Option value="2">2</Option>
 					<Option value="3">3</Option>
